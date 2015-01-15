@@ -12,7 +12,7 @@ You should already have the ui.bootstrap dependancy included in your app.js file
 ```sh
 angular.module('app', ['ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 ```
-Download the source from src/datetime-picker.min.js file and include it in your project.
+Download the source from dist/datetime-picker.min.js file and include it in your project.
 
 ## Usage
 You have the following properties available to use with the directive.  All are optional unless stated otherwise
