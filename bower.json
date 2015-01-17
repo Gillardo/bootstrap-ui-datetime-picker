@@ -24,7 +24,7 @@
     "bower_components",
     "test",
     "template",
-    "datetime-picker.js",
+    "/datetime-picker.js",
     "gruntfile.js",
     "package.json",
     "tests"
