@@ -16,6 +16,11 @@ angular.module('app', ['ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 ```
 Download the source from dist/datetime-picker.min.js file and include it in your project.
 
+Or use bower
+```
+bower install bootstrap-ui-datetime-picker -S
+```
+
 ## Usage
 You have the following properties available to use with the directive.  All are optional unless stated otherwise
 * ngModel (required) - Your date object
