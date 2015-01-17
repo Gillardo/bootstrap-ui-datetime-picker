@@ -20,6 +20,7 @@ Or use bower
 ```
 bower install bootstrap-ui-datetime-picker -S
 ```
+and link with `bower_components/angular-ui-datetime-picker-popup/dist/datetime-picker.min.js`
 
 ## Usage
 You have the following properties available to use with the directive.  All are optional unless stated otherwise
@@ -69,12 +70,8 @@ Object to configure settings for the timepicker (can be found on angularUI site)
 Personally i dont like the look of the angular-ui calendar itself, this is because the buttons are configured to use the btn-default style.  To get round this i have added a class called datetime-picker to the surrounding div element that contains the angular-ui datepicker.  Using this you can change the style of the calendar.  For example, if i add this css code, you will see the difference to the calendar in the images below
 
 ```sh
-.datetime-picker {
-    div > table {
-        .btn-default {
-            border: 0;
-        }
-    }
+.datetime-picker div > table .btn-default {
+    border: 0;
 }
 ```
 ###### BEFORE
