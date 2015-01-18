@@ -1,5 +1,5 @@
 {
-  "name": "angular-ui-datetime-picker-popup",
+  "name": "bootstrap-ui-datetime-picker",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "^0.4.5",

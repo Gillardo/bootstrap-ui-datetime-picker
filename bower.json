@@ -1,10 +1,9 @@
 {
-  "name": "angular-ui-datetime-picker-popup",
+  "name": "bootstrap-ui-datetime-picker",
   "version": "0.1.0",
   "homepage": "https://github.com/Gillardo/bootstrap-ui-datetime-picker",
   "authors": [
-    "Gillardo",
-    "krico <github@cwa.to>"
+    "Gillardo <darren.gillard81@gmail.com>"
   ],
   "description": "AngularJs directive to use a date and/or time picker as a dropdown from an input",
   "main": [
