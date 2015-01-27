@@ -18,9 +18,9 @@ Download the source from dist/datetime-picker.min.js file and include it in your
 
 Or use bower (thank you krico for setup)
 ```
-bower install ui-bootstrap-datetime-picker -S
+bower install bootstrap-ui-datetime-picker -S
 ```
-and link with `bower_components/ui-bootstrap-datetime-picker/dist/datetime-picker.min.js`
+and link with `bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.min.js`
 
 ## Usage
 You have the following properties available to use with the directive.  All are optional unless stated otherwise
