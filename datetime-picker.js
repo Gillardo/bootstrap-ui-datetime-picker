@@ -75,7 +75,7 @@ function ($compile, $parse, $document, $position, dateFilter, dateParser, datepi
             }
 
             // datepicker element
-            var datepickerEl = angular.element(popupEl.children()[0].children[0].children[0]);
+            var datepickerEl = angular.element(popupEl.children()[0].children[0]);
             if (attrs.datepickerOptions) {
                 angular.forEach(scope.$parent.$eval(attrs.datepickerOptions), function (value, option) {
                     datepickerEl.attr(cameltoDash(option), value);
@@ -83,7 +83,7 @@ function ($compile, $parse, $document, $position, dateFilter, dateParser, datepi
             }
 
             // timepicker element
-            var timepickerEl = angular.element(popupEl.children()[1].children[0].children[0]);
+            var timepickerEl = angular.element(popupEl.children()[1].children[0]);
             if (attrs.timepickerOptions) {
                 angular.forEach(scope.$parent.$eval(attrs.timepickerOptions), function (value, option) {
                     timepickerEl.attr(cameltoDash(option), value);
