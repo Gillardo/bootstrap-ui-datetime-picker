@@ -1,9 +1,9 @@
-﻿<ul class="dropdown-menu dropdown-menu-right" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', right: position.right+'px'}" ng-keydown="keydown($event)">
+﻿<ul class="dropdown-menu dropdown-menu-right" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', right: position.right+'px'}" style="left:inherit" ng-keydown="keydown($event)">
     <li style="padding:0 5px 5px 5px" class="datetime-picker">
         <div ng-transclude></div>
     </li>
     <li ng-if="showButtonBar" style="padding:5px">
-        <span class="btn-group pull-left">
+        <span class="btn-group pull-left" style="margin-right:10px">
             <button ng-if="showPicker == 'date'" type="button" class="btn btn-sm btn-info" ng-click="select('today')">{{ getText('today') }}</button>
             <button ng-if="showPicker == 'time'" type="button" class="btn btn-sm btn-info" ng-click="select('now')">{{ getText('now') }}</button>
             <button type="button" class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</button>
