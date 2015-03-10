@@ -40,7 +40,7 @@ module.exports = function (grunt) {
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                banner: '// <%= pkg.url %>\n// Version: <%= pkg.version %>\n// Released: <%= grunt.template.today("yyyy-mm-dd") %> \n'
             },
             app: {
                 src: 'dist/datetime-picker.js',
