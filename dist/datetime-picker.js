@@ -1,5 +1,7 @@
 // ********************************************
-// Version 1.0.0
+// datetime-picker.js
+// Version 1.0.2
+// https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // ********************************************
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
@@ -157,9 +159,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                     // Outer change
                     ngModel.$render = function () {
-                        var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
-                        element.val(date);
-                        scope.date = parseDate(ngModel.$modelValue);
+                        var date = ngModel.$viewValue ? parseDate(ngModel.$viewValue) : null;
+                        var display = date ? dateFilter(date, dateFormat) : '';
+                        element.val(display);
+                        scope.date = date;
                     };
 
                     var documentClickBind = function (event) {
