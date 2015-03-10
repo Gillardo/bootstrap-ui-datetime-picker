@@ -1,6 +1,6 @@
 // ********************************************
 // datetime-picker.js
-// Version 1.0.2
+// Version 1.0.3
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // ********************************************
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
@@ -55,10 +55,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                         '<div datetime-picker-popup>' +
-                            '<div collapse="showPicker == \'time\'">' +
+                            '<div ng-if="showPicker == \'date\'" collapse="showPicker == \'time\'">' +
                                 '<div datepicker></div>' +
                             '</div>' +
-                            '<div collapse="showPicker == \'date\'">' +
+                            '<div ng-if="showPicker == \'time\'" collapse="showPicker == \'date\'">' +
                                 '<div timepicker style="margin:0 auto"></div>' +
                             '</div>' +
                         '</div>');
