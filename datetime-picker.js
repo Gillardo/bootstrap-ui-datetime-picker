@@ -58,7 +58,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             '<div ng-if="showPicker == \'date\'" collapse="showPicker == \'time\'">' +
                                 '<div datepicker></div>' +
                             '</div>' +
-                            '<div ng-if="showPicker == \'time\'" collapse="showPicker == \'date\'">' +
+                            '<div collapse="showPicker == \'date\'">' +
                                 '<div timepicker style="margin:0 auto"></div>' +
                             '</div>' +
                         '</div>');
@@ -145,7 +145,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
 
-                        if (closeOnDateSelection && scope.showPicker != 'time') {
+                        if (closeOnDateSelection && scope.showPicker != 'time' && !(scope.enableDate && scope.enableTime)) {
                             scope.isOpen = false;
                             element[0].focus();
                         }
