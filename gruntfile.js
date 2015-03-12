@@ -28,7 +28,7 @@ module.exports = function (grunt) {
         },
         concat: {
             options: {
-                stripBanners: false
+                banner: '// <%= pkg.url %>\n// Version: <%= pkg.version %>\n// Released: <%= grunt.template.today("yyyy-mm-dd") %> \n'
             },
             app: {
                 src: [
