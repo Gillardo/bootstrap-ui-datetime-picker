@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.7
-// Released: 2015-03-12 
+// Version: 1.0.8
+// Released: 2015-03-13 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -27,8 +27,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
 
                     // determine which pickers should be available. Defaults to date and time
-                    scope.enableDate = !(scope.enableDate == false);
-                    scope.enableTime = !(scope.enableTime == false);
+                    scope.enableDate = scope.enableDate === false;
+                    scope.enableTime = scope.enableTime === false;
 
                     // default picker view
                     scope.showPicker = scope.enableDate ? 'date' : 'time';
@@ -53,10 +53,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                     '<div datetime-picker-popup>' +
-                    '<div ng-if="enableDate" collapse="!(showPicker == \'date\')" datepicker></div>' +
-                    '<div collapse="!(showPicker == \'time\')">' +
-                    '<div timepicker style="margin:0 auto"></div>' +
-                    '</div>' +
+                        '<div ng-if="enableDate" collapse="!(showPicker == \'date\')" datepicker></div>' +
+                        '<div collapse="!(showPicker == \'time\')">' +
+                            '<div timepicker style="margin:0 auto"></div>' +
+                        '</div>' +
                     '</div>');
 
                     // get attributes from directive
@@ -120,6 +120,16 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         } else if (angular.isString(viewValue)) {
                             var date = dateParser.parse(viewValue, dateFormat) || new Date(viewValue);
 
+                            // has problem parsing a time only, so create a date
+                            // with the time added on the end, and a dummy formatter
+                            // and use this to see if the time is valid
+                            if (scope.enableTime && !scope.enableDate) {
+                                var timeFormat = 'EEE MMM dd yyyy ' + dateFormat;
+                                var newTime = 'Fri Mar 12 2015 ' + viewValue;
+
+                                date = dateParser.parse(newTime, timeFormat) || new Date(newTime);
+                            }
+
                             if (isNaN(date)) {
                                 ngModel.$setValidity('date', false);
                                 return undefined;
@@ -175,7 +185,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                     element.bind('input change keyup', function () {
                         scope.$apply(function () {
-                            scope.date = parseDate(ngModel.$viewValue);
+                            scope.date = ngModel.$modelValue;
                         });
                     });
 
