@@ -50,10 +50,10 @@
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                     '<div datetime-picker-popup>' +
-                        '<div ng-if="enableDate" collapse="!(showPicker == \'date\')" datepicker></div>' +
-                        '<div collapse="!(showPicker == \'time\')">' +
-                            '<div timepicker style="margin:0 auto"></div>' +
-                        '</div>' +
+                    '<div ng-if="enableDate" collapse="!(showPicker == \'date\')" datepicker></div>' +
+                    '<div collapse="!(showPicker == \'time\')">' +
+                    '<div timepicker style="margin:0 auto"></div>' +
+                    '</div>' +
                     '</div>');
 
                     // get attributes from directive
@@ -121,10 +121,12 @@
                             // with the time added on the end, and a dummy formatter
                             // and use this to see if the time is valid
                             if (scope.enableTime && !scope.enableDate) {
-                                var timeFormat = 'EEE MMM dd yyyy ' + dateFormat;
-                                var newTime = 'Fri Mar 12 2015 ' + viewValue;
+                                if (viewValue.length == dateFormat.length) {
+                                    var timeFormat = 'EEE MMM dd yyyy ' + dateFormat;
+                                    var newTime = 'Fri Mar 12 2015 ' + viewValue;
 
-                                date = dateParser.parse(newTime, timeFormat) || new Date(newTime);
+                                    date = dateParser.parse(newTime, timeFormat) || new Date(newTime);
+                                }
                             }
 
                             if (isNaN(date)) {
