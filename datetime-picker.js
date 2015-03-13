@@ -24,8 +24,8 @@
                     scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
 
                     // determine which pickers should be available. Defaults to date and time
-                    scope.enableDate = scope.enableDate === false;
-                    scope.enableTime = scope.enableTime === false;
+                    scope.enableDate = !(scope.enableDate == false);
+                    scope.enableTime = !(scope.enableTime == false);
 
                     // default picker view
                     scope.showPicker = scope.enableDate ? 'date' : 'time';

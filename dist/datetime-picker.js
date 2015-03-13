@@ -1,5 +1,5 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.8
+// Version: 1.0.9
 // Released: 2015-03-13 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
@@ -27,8 +27,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
 
                     // determine which pickers should be available. Defaults to date and time
-                    scope.enableDate = scope.enableDate === false;
-                    scope.enableTime = scope.enableTime === false;
+                    scope.enableDate = !(scope.enableDate == false);
+                    scope.enableTime = !(scope.enableTime == false);
 
                     // default picker view
                     scope.showPicker = scope.enableDate ? 'date' : 'time';
