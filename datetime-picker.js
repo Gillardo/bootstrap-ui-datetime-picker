@@ -165,12 +165,13 @@
                             }
                         }
 
-                        // store currentDate
-                        currentDate = scope.date;
-
                         if (angular.isDefined(dt)) {
                             scope.date = dt;
                         }
+
+                        // store currentDate
+                        currentDate = scope.date;
+
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
 
