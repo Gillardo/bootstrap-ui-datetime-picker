@@ -1,9 +1,9 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.10
-// Released: 2015-03-13 
+// Version: 1.0.11
+// Released: 2015-03-23 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
-    .directive('datetimePicker', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
-        function ($compile, $parse, $document, $position, dateFilter, dateParser, datepickerPopupConfig) {
+    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
+        function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
             return {
                 restrict: 'A',
                 require: 'ngModel',
@@ -53,7 +53,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                     '<div datetime-picker-popup>' +
-                    '<div ng-if="enableDate" collapse="!(showPicker == \'date\')" datepicker></div>' +
+                    '<div collapse="!(showPicker == \'date\')" datepicker></div>' +
                     '<div collapse="!(showPicker == \'time\')">' +
                     '<div timepicker style="margin:0 auto"></div>' +
                     '</div>' +
@@ -85,11 +85,18 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         });
                     }
 
+                    // set datepickerMode to day by default as need to create watch
+                    // this gets round issue#5 where by the highlight is not shown
+                    if (!attrs['datepickerMode']) attrs['datepickerMode'] = 'day';
+
                     scope.watchData = {};
                     angular.forEach(['minDate', 'maxDate', 'datepickerMode'], function (key) {
                         if (attrs[key]) {
                             var getAttribute = $parse(attrs[key]);
-                            scope.$parent.$watch(getAttribute, function (value) {
+
+                            // was scope.$parent.$watch, but this is incorrect as added a page level watch
+                            // and we would like it just for this picker, not all pickers on the page
+                            scope.$watch(getAttribute, function (value) {
                                 scope.watchData[key] = value;
                             });
                             datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
@@ -169,6 +176,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
+
+                        // to get round issue#5 and to force the highlight, if the user has selected a date
+                        // lets change the datePicker to month, and then back to day again
+                        if (scope.showPicker == 'date') {
+                            $timeout(function() {
+                                scope.watchData['datepickerMode'] = 'month';
+
+                                $timeout(function() {
+                                    scope.watchData['datepickerMode'] = 'day';
+                                }, 200);
+
+                            }, 400);
+                        }
 
                         if (closeOnDateSelection) {
                             // do not close when using timePicker
