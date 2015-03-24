@@ -4,8 +4,8 @@
     </li>
     <li ng-if="showButtonBar" style="padding:5px">
         <span class="btn-group pull-left" style="margin-right:10px">
-            <button ng-if="showPicker == 'date'" type="button" class="btn btn-sm btn-info" ng-click="select('today')">{{ getText('today') }}</button>
-            <button ng-if="showPicker == 'time'" type="button" class="btn btn-sm btn-info" ng-click="select('now')">{{ getText('now') }}</button>
+            <button ng-if="showPicker == 'date'" type="button" class="btn btn-sm btn-info" ng-click="select('today')" ng-disabled="isTodayDisabled()">{{ getText('today') }}</button>
+            <button ng-if="showPicker == 'time'" type="button" class="btn btn-sm btn-info" ng-click="select('now')" ng-disabled="isTodayDisabled()">{{ getText('now') }}</button>
             <button type="button" class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</button>
         </span>
         <span class="btn-group pull-right">

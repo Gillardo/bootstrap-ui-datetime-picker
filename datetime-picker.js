@@ -114,6 +114,10 @@
                         datepickerEl.attr('date-disabled', 'dateDisabled({ date: date, mode: mode })');
                     }
 
+                    function isDateDisabled(dt) {
+                        return attrs.dateDisabled && angular.isDefined(dt) && scope.dateDisabled({ date: dt, mode: scope.watchData['datepickerMode']});
+                    }
+
                     function parseDate(viewValue) {
                         if (!viewValue) {
                             ngModel.$setValidity('date', true);
@@ -152,6 +156,7 @@
 
                     // Inner change
                     scope.dateSelection = function (dt) {
+
                         // check which picker is being shown, if its sate, all is fine and this is the date
                         // we will use, if its the timePicker but enableDate = true, we need to merge
                         // the values, else timePicker will reset the date
@@ -161,7 +166,7 @@
                                 currentDate.setMinutes(scope.date.getMinutes());
                                 currentDate.setSeconds(scope.date.getSeconds());
                                 currentDate.setMilliseconds(scope.date.getMilliseconds());
-                                scope.date = currentDate;
+                                dt = currentDate;
                             }
                         }
 
@@ -252,7 +257,12 @@
                         }
                     });
 
+                    scope.isTodayDisabled = function() {
+                        return isDateDisabled(new Date());
+                    };
+
                     scope.select = function (date) {
+
                         if (date === 'today' || date == 'now') {
                             var now = new Date();
                             if (angular.isDate(ngModel.$modelValue)) {
@@ -263,6 +273,7 @@
                                 date = now;
                             }
                         }
+
                         scope.dateSelection(date);
                     };
 
