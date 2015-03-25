@@ -19,13 +19,13 @@
 <p>Use datetime calendar to choose a date and/or time from a popup calendar.  This can be used as a replacement for the bootstrap-ui datepicker-popup control</p>
 <div style="width:500px">
     <h3>Pick a date</h3>
-    <div class="alert alert-info">Todays date should be disabled on this picker</div>
+    <div class="alert alert-info">Todays date should be disabled on this picker. Close on selection is set to false</div>
     <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label">Date</label>
             <div class="col-sm-10">
                 <p class="input-group">
-                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="myDate1" is-open="dateCalendarOpen" enable-time="false" date-disabled="disabled(date, mode)" />
+                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="myDate1" is-open="dateCalendarOpen" enable-time="false" date-disabled="disabled(date, mode)" close-on-date-selection="false" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDateCalendar($event)"><i class="fa fa-calendar"></i></button>
                 </span>
