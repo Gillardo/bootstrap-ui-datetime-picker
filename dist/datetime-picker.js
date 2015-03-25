@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.13
-// Released: 2015-03-24 
+// Version: 1.0.14
+// Released: 2015-03-25 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -52,11 +52,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
-                    '<div datetime-picker-popup>' +
-                    '<div collapse="!(showPicker == \'date\')" datepicker></div>' +
-                    '<div collapse="!(showPicker == \'time\')">' +
-                    '<div timepicker style="margin:0 auto"></div>' +
+                    '<div date-picker-wrap ng-show="showPicker == \'date\'">' +
+                    '<div datepicker></div>' +
                     '</div>' +
+                    '<div time-picker-wrap ng-show="showPicker == \'time\'">' +
+                    '<div timepicker style="margin:0 auto"></div>' +
                     '</div>');
 
                     // get attributes from directive
@@ -183,19 +183,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
 
-                        // to get round issue#5 and to force the highlight, if the user has selected a date
-                        // lets change the datePicker to month, and then back to day again
-                        if (scope.showPicker == 'date') {
-                            $timeout(function() {
-                                scope.watchData['datepickerMode'] = 'month';
-
-                                $timeout(function() {
-                                    scope.watchData['datepickerMode'] = 'day';
-                                }, 200);
-
-                            }, 400);
-                        }
-
                         if (closeOnDateSelection) {
                             // do not close when using timePicker
                             if (scope.showPicker != 'time') {
@@ -308,7 +295,22 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             };
         }])
 
-    .directive('datetimePickerPopup', function () {
+    .directive('datePickerWrap', function () {
+        return {
+            restrict: 'EA',
+            replace: true,
+            transclude: true,
+            templateUrl: 'template/datetime-picker.html',
+            link: function (scope, element, attrs) {
+                element.bind('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                });
+            }
+        };
+    })
+
+    .directive('timePickerWrap', function () {
         return {
             restrict: 'EA',
             replace: true,
@@ -322,7 +324,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             }
         };
     });
-
 angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
   'use strict';
 
