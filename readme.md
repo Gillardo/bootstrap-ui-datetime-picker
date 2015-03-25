@@ -8,7 +8,6 @@ AngularJs directive to use a date and/or time picker as a dropdown from an input
 To use the directive you must have the following angular-ui bootstrap directives included already
 * DatePicker
 * TimePicker
-* Collapse (Used for switching from datepicker to timepicker)
 
 You should already have the ui.bootstrap dependancy included in your app.js file like below, You then need to add ui.bootstrap.datetimepicker, as so
 ```sh
