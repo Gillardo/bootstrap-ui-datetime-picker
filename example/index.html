@@ -17,15 +17,14 @@
 <body style="padding:10px;" class="container-fluid">
 <h1>DateTime Picker Demo</h1>
 <p>Use datetime calendar to choose a date and/or time from a popup calendar.  This can be used as a replacement for the bootstrap-ui datepicker-popup control</p>
-<div style="width:500px">
+<hr />
+<div>
     <h3>Pick a date</h3>
-    <div class="alert alert-info">This picker has
-        <ul>
-            <li>dateDisabled used, todays date is disabled when the picker is displaying days</li>
-            <li>closeOnDateSelection="false"</li>
-            <li>datepickerOptions used</li>
-        </ul>
-    </div>
+    <ul>
+        <li>dateDisabled used, todays date is disabled when the picker is displaying days</li>
+        <li>closeOnDateSelection="false"</li>
+        <li>datepickerOptions - showWeeks=false, startingDay=1</li>
+    </ul>
     <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label">Date</label>
@@ -45,13 +44,17 @@
             </div>
         </div>
     </form>
+    <hr />
     <h3>Pick a time</h3>
+    <ul>
+        <li>timepickerOptions - showMeridian=false, readonlyInput=true</li>
+    </ul>
     <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label">Time</label>
             <div class="col-sm-10">
                 <p class="input-group">
-                    <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="myDate2" is-open="timeCalendarOpen" enable-date="false" />
+                    <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="myDate2" is-open="timeCalendarOpen" enable-date="false" timepicker-options="timeOptions" />
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openTimeCalendar($event)"><i class="fa fa-clock-o"></i></button>
                 </span>
@@ -65,6 +68,7 @@
             </div>
         </div>
     </form>
+    <hr />
     <h3>Pick a date and time</h3>
     <form class="form-horizontal">
         <div class="form-group">

@@ -16,6 +16,11 @@ app.controller('MyController', ['$scope', function($scope) {
         startingDay: 1
     };
 
+    $scope.timeOptions = {
+        readonlyInput: true,
+        showMeridian: false
+    };
+
     $scope.openDateCalendar = function(e) {
         e.preventDefault();
         e.stopPropagation();
