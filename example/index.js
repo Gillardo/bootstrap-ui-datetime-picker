@@ -11,6 +11,11 @@ app.controller('MyController', ['$scope', function($scope) {
         return (mode === 'day' && (new Date().toDateString() == date.toDateString()));
     };
 
+    $scope.dateOptions = {
+        showWeeks: false,
+        startingDay: 1
+    };
+
     $scope.openDateCalendar = function(e) {
         e.preventDefault();
         e.stopPropagation();
