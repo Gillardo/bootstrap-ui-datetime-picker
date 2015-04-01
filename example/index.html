@@ -30,9 +30,9 @@
             <label class="col-sm-2 control-label">Date</label>
             <div class="col-sm-10">
                 <p class="input-group">
-                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="myDate1" is-open="dateCalendarOpen" enable-time="false" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-on-date-selection="false" />
+                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="dates.date1" is-open="open.date1" enable-time="false" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-on-date-selection="false" />
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDateCalendar($event)"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event, 'date1')"><i class="fa fa-calendar"></i></button>
                 </span>
                 </p>
             </div>
@@ -40,7 +40,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">model</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{ myDate1 }}</p>
+                <p class="form-control-static">{{ dates.date1 }}</p>
             </div>
         </div>
     </form>
@@ -54,9 +54,9 @@
             <label class="col-sm-2 control-label">Time</label>
             <div class="col-sm-10">
                 <p class="input-group">
-                    <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="myDate2" is-open="timeCalendarOpen" enable-date="false" timepicker-options="timeOptions" />
+                    <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="dates.date2" is-open="open.date2" enable-date="false" timepicker-options="timeOptions" />
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openTimeCalendar($event)"><i class="fa fa-clock-o"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event, 'date2')"><i class="fa fa-clock-o"></i></button>
                 </span>
                 </p>
             </div>
@@ -64,7 +64,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">model</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{ myDate2 }}</p>
+                <p class="form-control-static">{{ dates.date2 }}</p>
             </div>
         </div>
     </form>
@@ -75,9 +75,9 @@
             <label class="col-sm-2 control-label">Both</label>
             <div class="col-sm-10">
                 <p class="input-group">
-                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="myDate3" is-open="dateTimeCalendarOpen" />
+                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="dates.date3" is-open="open.date3" />
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDateTimeCalendar($event)"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event, 'date3')"><i class="fa fa-calendar"></i></button>
                 </span>
                 </p>
             </div>
@@ -85,7 +85,40 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">model</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{ myDate3 }}</p>
+                <p class="form-control-static">{{ dates.date3 }}</p>
+            </div>
+        </div>
+    </form>
+    <hr />
+    <h3>Pick two dates to calculate difference</h3>
+    <p>Pick a date range, using two dates. Use minDate and maxDate to make sure your end date cannot be before your start date and vice-versa</p>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">From</label>
+            <div class="col-sm-10">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="dates.date4" is-open="open.date4" enable-time="false" max-date="dates.date5" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event, 'date4')"><i class="fa fa-calendar"></i></button>
+                </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">To</label>
+            <div class="col-sm-10">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="dates.date5" is-open="open.date5" enable-time="false" min-date="dates.date4" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event, 'date5')"><i class="fa fa-calendar"></i></button>
+                </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Difference</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">{{ dayRange }} (days)</p>
             </div>
         </div>
     </form>

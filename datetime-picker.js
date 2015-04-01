@@ -91,9 +91,7 @@
                         if (attrs[key]) {
                             var getAttribute = $parse(attrs[key]);
 
-                            // was scope.$parent.$watch, but this is incorrect as added a page level watch
-                            // and we would like it just for this picker, not all pickers on the page
-                            scope.$watch(getAttribute, function (value) {
+                            scope.$parent.$watch(getAttribute, function (value) {
                                 scope.watchData[key] = value;
                             });
                             datepickerEl.attr(cameltoDash(key), 'watchData.' + key);

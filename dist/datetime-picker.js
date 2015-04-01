@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.16
-// Released: 2015-03-30 
+// Version: 1.0.17
+// Released: 2015-04-01 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -94,9 +94,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         if (attrs[key]) {
                             var getAttribute = $parse(attrs[key]);
 
-                            // was scope.$parent.$watch, but this is incorrect as added a page level watch
-                            // and we would like it just for this picker, not all pickers on the page
-                            scope.$watch(getAttribute, function (value) {
+                            scope.$parent.$watch(getAttribute, function (value) {
                                 scope.watchData[key] = value;
                             });
                             datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
