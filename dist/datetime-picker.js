@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 1.0.17
-// Released: 2015-04-01 
+// Released: 2015-04-09 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -78,7 +78,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
 
                     // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1].children[0]);
+                    var timepickerEl = angular.element(popupEl.children()[1]);
                     if (attrs.timepickerOptions) {
                         angular.forEach(scope.$parent.$eval(attrs.timepickerOptions), function (value, option) {
                             timepickerEl.attr(cameltoDash(option), value);
@@ -322,6 +322,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             }
         };
     });
+
 angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
   'use strict';
 

@@ -75,7 +75,7 @@
                     }
 
                     // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1].children[0]);
+                    var timepickerEl = angular.element(popupEl.children()[1]);
                     if (attrs.timepickerOptions) {
                         angular.forEach(scope.$parent.$eval(attrs.timepickerOptions), function (value, option) {
                             timepickerEl.attr(cameltoDash(option), value);
