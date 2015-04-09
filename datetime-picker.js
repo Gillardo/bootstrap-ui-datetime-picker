@@ -75,7 +75,7 @@
                     }
 
                     // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1].children[0]);
+                    var timepickerEl = angular.element(popupEl.children()[1]);
                     if (attrs.timepickerOptions) {
                         angular.forEach(scope.$parent.$eval(attrs.timepickerOptions), function (value, option) {
                             timepickerEl.attr(cameltoDash(option), value);
@@ -158,13 +158,12 @@
                         // check which picker is being shown, if its sate, all is fine and this is the date
                         // we will use, if its the timePicker but enableDate = true, we need to merge
                         // the values, else timePicker will reset the date
-                        if (scope.enableDate && scope.enableTime && scope.showPicker == 'time') {
+                        if (scope.enableDate && scope.enableTime && scope.showPicker === 'time') {
                             if (currentDate && currentDate !== null && scope.date !== null) {
                                 currentDate.setHours(scope.date.getHours());
                                 currentDate.setMinutes(scope.date.getMinutes());
                                 currentDate.setSeconds(scope.date.getSeconds());
                                 currentDate.setMilliseconds(scope.date.getMilliseconds());
-                                dt = currentDate;
                             }
                         }
 
