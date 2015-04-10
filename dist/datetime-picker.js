@@ -163,17 +163,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         if (scope.enableDate && scope.enableTime && scope.showPicker === 'time') {
                             if (currentDate && currentDate !== null && (scope.date !== null || dt)) {
                                 // dt will not be undefined if the now or today button is pressed
-                                if (dt) {
+                                if (angular.isDefined(dt)) {
                                     currentDate.setHours(dt.getHours());
                                     currentDate.setMinutes(dt.getMinutes());
                                     currentDate.setSeconds(dt.getSeconds());
                                     currentDate.setMilliseconds(dt.getMilliseconds());
+                                    dt = new Date(currentDate);
                                 } else {
                                     currentDate.setHours(scope.date.getHours());
                                     currentDate.setMinutes(scope.date.getMinutes());
                                     currentDate.setSeconds(scope.date.getSeconds());
                                     currentDate.setMilliseconds(scope.date.getMilliseconds());
                                 }
+
                             }
                         }
 
