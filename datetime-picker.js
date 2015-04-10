@@ -75,7 +75,7 @@
                     }
 
                     // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1].children[0]);
+                    var timepickerEl = angular.element(popupEl.children()[1]);
                     if (attrs.timepickerOptions) {
                         angular.forEach(scope.$parent.$eval(attrs.timepickerOptions), function (value, option) {
                             timepickerEl.attr(cameltoDash(option), value);
@@ -154,17 +154,23 @@
 
                     // Inner change
                     scope.dateSelection = function (dt) {
-
-                        // check which picker is being shown, if its sate, all is fine and this is the date
+                        // check which picker is being shown, if its date, all is fine and this is the date
                         // we will use, if its the timePicker but enableDate = true, we need to merge
                         // the values, else timePicker will reset the date
-                        if (scope.enableDate && scope.enableTime && scope.showPicker == 'time') {
-                            if (currentDate && currentDate !== null && scope.date !== null) {
-                                currentDate.setHours(scope.date.getHours());
-                                currentDate.setMinutes(scope.date.getMinutes());
-                                currentDate.setSeconds(scope.date.getSeconds());
-                                currentDate.setMilliseconds(scope.date.getMilliseconds());
-                                dt = currentDate;
+                        if (scope.enableDate && scope.enableTime && scope.showPicker === 'time') {
+                            if (currentDate && currentDate !== null && (scope.date !== null || dt)) {
+                                // dt will not be undefined if the now or today button is pressed
+                                if (dt) {
+                                    currentDate.setHours(dt.getHours());
+                                    currentDate.setMinutes(dt.getMinutes());
+                                    currentDate.setSeconds(dt.getSeconds());
+                                    currentDate.setMilliseconds(dt.getMilliseconds());
+                                } else {
+                                    currentDate.setHours(scope.date.getHours());
+                                    currentDate.setMinutes(scope.date.getMinutes());
+                                    currentDate.setSeconds(scope.date.getSeconds());
+                                    currentDate.setMilliseconds(scope.date.getMilliseconds());
+                                }
                             }
                         }
 
