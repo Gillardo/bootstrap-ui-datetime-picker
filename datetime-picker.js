@@ -158,9 +158,9 @@
                         // we will use, if its the timePicker but enableDate = true, we need to merge
                         // the values, else timePicker will reset the date
                         if (scope.enableDate && scope.enableTime && scope.showPicker === 'time') {
-                            if (currentDate && currentDate !== null && (scope.date !== null || dt)) {
+                            if (currentDate && currentDate !== null && (scope.date !== null || dt || dt != null)) {
                                 // dt will not be undefined if the now or today button is pressed
-                                if (angular.isDefined(dt)) {
+                                if (dt && dt != null) {
                                     currentDate.setHours(dt.getHours());
                                     currentDate.setMinutes(dt.getMinutes());
                                     currentDate.setSeconds(dt.getSeconds());

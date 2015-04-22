@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.18
-// Released: 2015-04-10 
+// Version: 1.0.19
+// Released: 2015-04-22 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -161,9 +161,9 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         // we will use, if its the timePicker but enableDate = true, we need to merge
                         // the values, else timePicker will reset the date
                         if (scope.enableDate && scope.enableTime && scope.showPicker === 'time') {
-                            if (currentDate && currentDate !== null && (scope.date !== null || dt)) {
+                            if (currentDate && currentDate !== null && (scope.date !== null || dt || dt != null)) {
                                 // dt will not be undefined if the now or today button is pressed
-                                if (angular.isDefined(dt)) {
+                                if (dt && dt != null) {
                                     currentDate.setHours(dt.getHours());
                                     currentDate.setMinutes(dt.getMinutes());
                                     currentDate.setSeconds(dt.getSeconds());
