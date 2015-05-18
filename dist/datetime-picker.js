@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.19
-// Released: 2015-04-22 
+// Version: 1.0.20
+// Released: 2015-05-18 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -246,10 +246,13 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             scope.$broadcast('datepicker.focus');
                             scope.position = appendToBody ? $position.offset(element) : $position.position(element);
                             scope.position.top = scope.position.top + element.prop('offsetHeight');
+                            if (appendToBody) {
+                                scope.position.right = $document.width() - scope.position.left - element.parent().width();
+                            }
 
-                            $document.bind('click', documentClickBind);
+                            $document.bind('mousedown', documentClickBind);
                         } else {
-                            $document.unbind('click', documentClickBind);
+                            $document.unbind('mousedown', documentClickBind);
                         }
                     });
 
@@ -295,7 +298,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.$on('$destroy', function () {
                         $popup.remove();
                         element.unbind('keydown', keydown);
-                        $document.unbind('click', documentClickBind);
+                        $document.unbind('mousedown', documentClickBind);
                     });
                 }
             };
@@ -308,7 +311,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             transclude: true,
             templateUrl: 'template/datetime-picker.html',
             link: function (scope, element, attrs) {
-                element.bind('click', function (event) {
+                element.bind('mousedown', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
@@ -323,7 +326,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             transclude: true,
             templateUrl: 'template/datetime-picker.html',
             link: function (scope, element, attrs) {
-                element.bind('click', function (event) {
+                element.bind('mousedown', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
