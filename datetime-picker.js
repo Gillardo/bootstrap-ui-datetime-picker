@@ -243,10 +243,13 @@
                             scope.$broadcast('datepicker.focus');
                             scope.position = appendToBody ? $position.offset(element) : $position.position(element);
                             scope.position.top = scope.position.top + element.prop('offsetHeight');
+                            if (appendToBody) {
+                                scope.position.right = $document.width() - scope.position.left - element.parent().width();
+                            }
 
-                            $document.bind('click', documentClickBind);
+                            $document.bind('mousedown', documentClickBind);
                         } else {
-                            $document.unbind('click', documentClickBind);
+                            $document.unbind('mousedown', documentClickBind);
                         }
                     });
 
@@ -292,7 +295,7 @@
                     scope.$on('$destroy', function () {
                         $popup.remove();
                         element.unbind('keydown', keydown);
-                        $document.unbind('click', documentClickBind);
+                        $document.unbind('mousedown', documentClickBind);
                     });
                 }
             };
@@ -305,7 +308,7 @@
             transclude: true,
             templateUrl: 'template/datetime-picker.html',
             link: function (scope, element, attrs) {
-                element.bind('click', function (event) {
+                element.bind('mousedown', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
@@ -320,7 +323,7 @@
             transclude: true,
             templateUrl: 'template/datetime-picker.html',
             link: function (scope, element, attrs) {
-                element.bind('click', function (event) {
+                element.bind('mousedown', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
