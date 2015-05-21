@@ -238,18 +238,32 @@
                         }
                     };
 
+                    var reposition = function() {
+                        scope.position = appendToBody ? $position.offset(element) : $position.position(element);
+                        scope.position.top = scope.position.top + element.prop('offsetHeight');
+                        if (appendToBody) {
+                            scope.position.right = $document.width() - scope.position.left - element.parent().width();
+                        }
+                    }
+
+                    var repositionScrollHandler = function() {
+                        console.log('reposition');
+                        scope.$apply(reposition);
+                    }
+
                     scope.$watch('isOpen', function (value) {
                         if (value) {
                             scope.$broadcast('datepicker.focus');
-                            scope.position = appendToBody ? $position.offset(element) : $position.position(element);
-                            scope.position.top = scope.position.top + element.prop('offsetHeight');
+                            reposition();
                             if (appendToBody) {
-                                scope.position.right = $document.width() - scope.position.left - element.parent().width();
+                                element.parents().on('scroll', repositionScrollHandler);
                             }
-
                             $document.bind('mousedown', documentClickBind);
                         } else {
                             $document.unbind('mousedown', documentClickBind);
+                            if (appendToBody) {
+                                element.parents().off('scroll', repositionScrollHandler);
+                            }
                         }
                     });
 
