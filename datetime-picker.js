@@ -1,4 +1,21 @@
-﻿angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
+﻿/**
+ * Add parents() to jqLite.
+ */
+if (!angular.element.prototype.parents) {
+    angular.element.prototype.parents = function() {
+        var res = [];
+        for (var i = 0; i < this.length; i++) {
+            var el = this[i];
+            while (el.parentNode && el.parentNode.nodeType == 1) {
+                res.push(el.parentNode);
+                el = el.parentNode;
+            }
+        }
+        return angular.element(res);
+    };
+}
+
+angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
             return {
