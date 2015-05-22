@@ -261,12 +261,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         if (appendToBody) {
                             scope.position.right = $document.width() - scope.position.left - element.parent().width();
                         }
-                    }
+                    };
 
                     var repositionScrollHandler = function() {
                         console.log('reposition');
                         scope.$apply(reposition);
-                    }
+                    };
 
                     scope.$watch('isOpen', function (value) {
                         if (value) {

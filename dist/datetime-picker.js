@@ -1,6 +1,23 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.20
-// Released: 2015-05-18 
+// Version: 1.0.21
+// Released: 2015-05-22 
+/**
+ * Add parents() to jqLite.
+ */
+if (!angular.element.prototype.parents) {
+    angular.element.prototype.parents = function() {
+        var res = [];
+        for (var i = 0; i < this.length; i++) {
+            var el = this[i];
+            while (el.parentNode && el.parentNode.nodeType == 1) {
+                res.push(el.parentNode);
+                el = el.parentNode;
+            }
+        }
+        return angular.element(res);
+    };
+}
+
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
@@ -241,18 +258,32 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
                     };
 
+                    var reposition = function() {
+                        scope.position = appendToBody ? $position.offset(element) : $position.position(element);
+                        scope.position.top = scope.position.top + element.prop('offsetHeight');
+                        if (appendToBody) {
+                            scope.position.right = $document.width() - scope.position.left - element.parent().width();
+                        }
+                    };
+
+                    var repositionScrollHandler = function() {
+                        console.log('reposition');
+                        scope.$apply(reposition);
+                    };
+
                     scope.$watch('isOpen', function (value) {
                         if (value) {
                             scope.$broadcast('datepicker.focus');
-                            scope.position = appendToBody ? $position.offset(element) : $position.position(element);
-                            scope.position.top = scope.position.top + element.prop('offsetHeight');
+                            reposition();
                             if (appendToBody) {
-                                scope.position.right = $document.width() - scope.position.left - element.parent().width();
+                                element.parents().on('scroll', repositionScrollHandler);
                             }
-
                             $document.bind('mousedown', documentClickBind);
                         } else {
                             $document.unbind('mousedown', documentClickBind);
+                            if (appendToBody) {
+                                element.parents().off('scroll', repositionScrollHandler);
+                            }
                         }
                     });
 
