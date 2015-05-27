@@ -106,4 +106,4 @@ app.controller('MyController', ['$scope', function($scope) {
 ```
 
 ## Support
-This was developed using angular-ui bootstrap Version: 0.12.0 - 2014-11-16.  If you have a bug, please check what version of angular-ui you are using.  If you are using a version prior to this, then please upgrade if you can and try it. If the problem persists, please let me know.  I do have a day job but will try to get back to you asap.  If you can fix the bug, then let me know how, or even better, submit a pull request.
+This was developed using angular-ui bootstrap Version: 0.13.0 - 2015-05-02.  If you have a bug, please check what version of angular-ui you are using.  If you are using a version prior to this, then please upgrade if you can and try it. If the problem persists, please let me know.  I do have a day job but will try to get back to you asap.  If you can fix the bug, then let me know how, or even better, submit a pull request.
