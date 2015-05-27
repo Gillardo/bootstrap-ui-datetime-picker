@@ -1,21 +1,4 @@
-﻿/**
- * Add parents() to jqLite.
- */
-if (!angular.element.prototype.parents) {
-    angular.element.prototype.parents = function() {
-        var res = [];
-        for (var i = 0; i < this.length; i++) {
-            var el = this[i];
-            while (el.parentNode && el.parentNode.nodeType == 1) {
-                res.push(el.parentNode);
-                el = el.parentNode;
-            }
-        }
-        return angular.element(res);
-    };
-}
-
-angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
+﻿angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
             return {
@@ -143,18 +126,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         } else if (angular.isString(viewValue)) {
                             var date = dateParser.parse(viewValue, dateFormat) || new Date(viewValue);
 
-                            // has problem parsing a time only, so create a date
-                            // with the time added on the end, and a dummy formatter
-                            // and use this to see if the time is valid
-                            if (scope.enableTime && !scope.enableDate) {
-                                if (viewValue.length == dateFormat.length) {
-                                    var timeFormat = 'EEE MMM dd yyyy ' + dateFormat;
-                                    var newTime = 'Fri Mar 12 2015 ' + viewValue;
-
-                                    date = dateParser.parse(newTime, timeFormat) || new Date(newTime);
-                                }
-                            }
-
                             if (isNaN(date)) {
                                 ngModel.$setValidity('date', false);
                                 return undefined;
@@ -248,39 +219,26 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.keydown = function (evt) {
                         if (evt.which === 27) {
                             evt.preventDefault();
-                            evt.stopPropagation();
+
+                            if (scope.isOpen) {
+                                evt.stopPropagation();
+                            }
                             scope.close();
                         } else if (evt.which === 40 && !scope.isOpen) {
                             scope.isOpen = true;
                         }
                     };
 
-                    var reposition = function() {
-                        scope.position = appendToBody ? $position.offset(element) : $position.position(element);
-                        scope.position.top = scope.position.top + element.prop('offsetHeight');
-                        if (appendToBody) {
-                            scope.position.right = $document.width() - scope.position.left - element.parent().width();
-                        }
-                    };
-
-                    var repositionScrollHandler = function() {
-                        console.log('reposition');
-                        scope.$apply(reposition);
-                    };
-
                     scope.$watch('isOpen', function (value) {
                         if (value) {
                             scope.$broadcast('datepicker.focus');
-                            reposition();
-                            if (appendToBody) {
-                                element.parents().on('scroll', repositionScrollHandler);
-                            }
+
+                            scope.position = appendToBody ? $position.offset(element) : $position.position(element);
+                            scope.position.top = scope.position.top + element.prop('offsetHeight');
+
                             $document.bind('mousedown', documentClickBind);
                         } else {
                             $document.unbind('mousedown', documentClickBind);
-                            if (appendToBody) {
-                                element.parents().off('scroll', repositionScrollHandler);
-                            }
                         }
                     });
 
