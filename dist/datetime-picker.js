@@ -1,9 +1,23 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.0.22
-// Released: 2015-05-27 
+// Version: 1.1.0
+// Released: 2015-05-28 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
-    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
-        function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, datepickerPopupConfig) {
+    .constant('uiDatetimePickerConfig', {
+        dateFormat: 'yyyy-MM-dd HH:mm',
+        enableDate: true,
+        enableTime: true,
+        todayText: 'Today',
+        nowText: 'Now',
+        clearText: 'Clear',
+        closeText: 'Done',
+        dateText: 'Date',
+        timeText: 'Time',
+        closeOnDateSelection: true,
+        appendToBody: false,
+        showButtonBar: true
+    })
+    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'uiDatetimePickerConfig',
+        function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, uiDatetimePickerConfig) {
             return {
                 restrict: 'A',
                 require: 'ngModel',
@@ -20,15 +34,15 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     dateDisabled: '&'
                 },
                 link: function (scope, element, attrs, ngModel) {
-                    var dateFormat = 'dd MMM yyyy HH:mm:ss', currentDate,
-                        closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : datepickerPopupConfig.closeOnDateSelection,
-                        appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : datepickerPopupConfig.appendToBody;
+                    var dateFormat = uiDatetimePickerConfig.dateFormat, currentDate,
+                        closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
+                        appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody;
 
-                    scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
+                    scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : uiDatetimePickerConfig.showButtonBar;
 
                     // determine which pickers should be available. Defaults to date and time
-                    scope.enableDate = !(scope.enableDate == false);
-                    scope.enableTime = !(scope.enableTime == false);
+                    scope.enableDate = angular.isDefined(scope.enableDate) ? scope.enableDate : uiDatetimePickerConfig.enableDate;
+                    scope.enableTime = angular.isDefined(scope.enableTime) ? scope.enableTime : uiDatetimePickerConfig.enableTime;
 
                     // default picker view
                     scope.showPicker = scope.enableDate ? 'date' : 'time';
@@ -42,11 +56,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.timeText = scope.timeText || 'Time';
 
                     scope.getText = function (key) {
-                        return scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
+                        return scope[key + 'Text'] || uiDatetimePickerConfig[key + 'Text'];
                     };
 
                     attrs.$observe('datetimePicker', function (value) {
-                        dateFormat = value || datepickerPopupConfig.datepickerPopup;
+                        dateFormat = value || uiDatetimePickerConfig.dateFormat;
                         ngModel.$render();
                     });
 
