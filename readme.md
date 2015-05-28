@@ -65,6 +65,26 @@ Object to configure settings for the datepicker (can be found on angularUI site)
 ##### timepickerOptions
 Object to configure settings for the timepicker (can be found on angularUI site)
 
+## uiDatetimePickerConfig
+Now datetimePicker options are globally set by default.  If you do not state the values within the declaration, the config options are used instead.  Here are the default options
+
+```sh
+.constant('uiDatetimePickerConfig', {
+    dateFormat: 'yyyy-MM-dd HH:mm',
+    enableDate: true,
+    enableTime: true,
+    todayText: 'Today',
+    nowText: 'Now',
+    clearText: 'Clear',
+    closeText: 'Done',
+    dateText: 'Date',
+    timeText: 'Time',
+    closeOnDateSelection: true,
+    appendToBody: false,
+    showButtonBar: true
+})
+```
+
 ## Css
 Personally i dont like the look of the angular-ui calendar itself, this is because the buttons are configured to use the btn-default style.  To get round this i have added a class called datetime-picker to the surrounding div element that contains the angular-ui datepicker.  Using this you can change the style of the calendar.  For example, if i add this css code, you will see the difference to the calendar in the images below
 
