@@ -138,7 +138,7 @@
                             ngModel.$setValidity('date', true);
                             return viewValue;
                         } else if (angular.isString(viewValue)) {
-                            var date = dateParser.parse(viewValue, dateFormat) || new Date(viewValue);
+                            var date = dateParser.parse(viewValue, dateFormat);
 
                             if (isNaN(date)) {
                                 ngModel.$setValidity('date', false);
