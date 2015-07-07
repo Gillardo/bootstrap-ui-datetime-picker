@@ -86,10 +86,10 @@ Now datetimePicker options are globally set by default.  If you do not state the
 ```
 
 ## Css
-Personally i dont like the look of the angular-ui calendar itself, this is because the buttons are configured to use the btn-default style.  To get round this i have added a class called datetime-picker to the surrounding div element that contains the angular-ui datepicker.  Using this you can change the style of the calendar.  For example, if i add this css code, you will see the difference to the calendar in the images below
+Personally i dont like the look of the angular-ui calendar itself, this is because the buttons are configured to use the btn-default style.  To get round this two classes are used depending on the picker that is being shown.  These classes surroud the div element that contains the angular-ui datepicker and timepicker.  Using this you can change the style of the calendar.  For example, if i add this css code, you will see the difference to the calendar in the images below
 
 ```sh
-.datetime-picker div > table .btn-default {
+.datetime-picker-dropdown > li.date-picker-menu div > table .btn-default {
     border: 0;
 }
 ```
@@ -98,6 +98,21 @@ Personally i dont like the look of the angular-ui calendar itself, this is becau
 ###### AFTER
 ![alt tag](http://imageshack.com/a/img673/5236/to31hz.gif)
 
+There is also a custom class called datetime-picker-dropdown that is inserted into the dropdown element, which is called datetime-picker-dropdown.  Using all these classes you should be able to configure the datetime picker as you want.  Here are how you would configure the classes
+
+```sh
+.datetime-picker-dropdown {
+
+}
+
+.datetime-picker-dropdown > li.date-picker-menu div > table .btn-default {
+    
+}
+
+.datetime-picker-dropdown > li.time-picker-menu div > table {
+
+}
+```
 
 ## Example
 Here is an example to use the directive with a bootstrap input, displaying a calendar button
