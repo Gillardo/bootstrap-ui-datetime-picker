@@ -1,5 +1,5 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.1.1
+// Version: 1.1.2
 // Released: 2015-07-07 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
@@ -47,14 +47,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // default picker view
                     scope.showPicker = scope.enableDate ? 'date' : 'time';
 
-                    // default text
-                    scope.todayText = scope.todayText || 'Today';
-                    scope.nowText = scope.nowText || 'Now';
-                    scope.clearText = scope.clearText || 'Clear';
-                    scope.closeText = scope.closeText || 'Close';
-                    scope.dateText = scope.dateText || 'Date';
-                    scope.timeText = scope.timeText || 'Time';
-
+                    // get text
                     scope.getText = function (key) {
                         return scope[key + 'Text'] || uiDatetimePickerConfig[key + 'Text'];
                     };

@@ -106,7 +106,7 @@ There is also a custom class called datetime-picker-dropdown that is inserted in
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table .btn-default {
-    
+
 }
 
 .datetime-picker-dropdown > li.time-picker-menu div > table {
