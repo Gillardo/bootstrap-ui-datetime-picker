@@ -1,5 +1,5 @@
-﻿<ul class="dropdown-menu dropdown-menu-left" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}" style="left:inherit" ng-keydown="keydown($event)">
-    <li style="padding:0 5px 5px 5px" class="datetime-picker">
+﻿<ul class="dropdown-menu dropdown-menu-left datetime-picker-dropdown" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}" style="left:inherit" ng-keydown="keydown($event)">
+    <li style="padding:0 5px 5px 5px" ng-class="{'date-picker-menu': showPicker == 'date', 'time-picker-menu' : showPicker == 'time'}">
         <div ng-transclude></div>
     </li>
     <li ng-if="showButtonBar" style="padding:5px">
