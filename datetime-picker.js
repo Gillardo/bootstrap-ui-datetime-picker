@@ -181,15 +181,16 @@
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
 
-                        if (closeOnDateSelection) {
+                        if (dt === null) {
+                            scope.close();
+                        } else if (closeOnDateSelection) {
                             // do not close when using timePicker
                             if (scope.showPicker != 'time') {
                                 // if time is enabled, swap to timePicker
                                 if (scope.enableTime) {
                                     scope.showPicker = 'time';
                                 } else {
-                                    scope.isOpen = false;
-                                    element[0].focus();
+                                    scope.close();
                                 }
                             }
                         }
