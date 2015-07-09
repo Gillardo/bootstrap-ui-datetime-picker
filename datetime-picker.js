@@ -1,4 +1,7 @@
-﻿angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
+// https://github.com/Gillardo/bootstrap-ui-datetime-picker
+// Version: 1.1.4
+// Released: 2015-07-09 
+angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
         enableDate: true,
@@ -181,15 +184,16 @@
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
 
-                        if (closeOnDateSelection) {
+                        if (dt === null) {
+                            scope.close();
+                        } else if (closeOnDateSelection) {
                             // do not close when using timePicker
                             if (scope.showPicker != 'time') {
                                 // if time is enabled, swap to timePicker
                                 if (scope.enableTime) {
                                     scope.showPicker = 'time';
                                 } else {
-                                    scope.isOpen = false;
-                                    element[0].focus();
+                                    scope.close();
                                 }
                             }
                         }
@@ -326,3 +330,11 @@
             }
         };
     });
+angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('template/datetime-picker.html',
+    "<ul class=\"dropdown-menu dropdown-menu-left datetime-picker-dropdown\" ng-style=\"{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}\" style=left:inherit ng-keydown=keydown($event)><li style=\"padding:0 5px 5px 5px\" ng-class=\"{'date-picker-menu': showPicker == 'date', 'time-picker-menu' : showPicker == 'time'}\"><div ng-transclude></div></li><li ng-if=showButtonBar style=padding:5px><span class=\"btn-group pull-left\" style=margin-right:10px><button ng-if=\"showPicker == 'date'\" type=button class=\"btn btn-sm btn-info\" ng-click=\"select('today')\" ng-disabled=isTodayDisabled()>{{ getText('today') }}</button> <button ng-if=\"showPicker == 'time'\" type=button class=\"btn btn-sm btn-info\" ng-click=\"select('now')\" ng-disabled=isTodayDisabled()>{{ getText('now') }}</button> <button type=button class=\"btn btn-sm btn-danger\" ng-click=select(null)>{{ getText('clear') }}</button></span> <span class=\"btn-group pull-right\"><button ng-if=\"showPicker == 'date' && enableTime\" type=button class=\"btn btn-sm btn-default\" ng-click=\"changePicker('time')\">{{ getText('time')}}</button> <button ng-if=\"showPicker == 'time' && enableDate\" type=button class=\"btn btn-sm btn-default\" ng-click=\"changePicker('date')\">{{ getText('date')}}</button> <button type=button class=\"btn btn-sm btn-success\" ng-click=close()>{{ getText('close') }}</button></span></li></ul>"
+  );
+
+}]);
