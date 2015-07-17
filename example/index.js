@@ -9,7 +9,8 @@ app.controller('MyController', ['$scope', function($scope) {
         date4: new Date('01 Mar 2015'),
         date5: new Date('10 Mar 2015'),
         date6: new Date(),
-        date7: new Date()
+        date7: new Date(),
+        date8: new Date()
     };
 
     $scope.open = {
@@ -19,7 +20,8 @@ app.controller('MyController', ['$scope', function($scope) {
         date4: false,
         date5: false,
         date6: false,
-        date7: false
+        date7: false,
+        date8: false
     };
 
     // Disable weekend selection

@@ -161,6 +161,28 @@
         </div>
     </form>
     <hr />
+    <h3>View Mode</h3>
+    <p>use a particular view mode only for the datepicker.</p>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-10">
+                <p class="input-group dropup">
+                    <input type="text" class="form-control" datepicker-mode="'year'" datetime-picker="yyyy" ng-model="dates.date8" is-open="open.date8" enable-time="false" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event, 'date8')"><i class="fa fa-calendar"></i></button>
+                </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">model</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">{{ dates.date8 }}</p>
+            </div>
+        </div>
+    </form>
+    <hr />
 </div>
 </body>
 
