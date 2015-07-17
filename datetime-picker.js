@@ -91,7 +91,7 @@
 
                     // set datepickerMode to day by default as need to create watch
                     // this gets round issue#5 where by the highlight is not shown
-                    if (!attrs['datepickerMode']) attrs['datepickerMode'] = 'day';
+                    if (!angular.isDefined(attrs['datepickerMode'])) attrs['datepickerMode'] = 'day';
 
                     scope.watchData = {};
                     angular.forEach(['minDate', 'maxDate', 'datepickerMode'], function (key) {
@@ -106,13 +106,12 @@
                             // Propagate changes from datepicker to outside
                             if (key === 'datepickerMode') {
                                 var setAttribute = getAttribute.assign;
-                                scope.$watch('watchData.' + key, function (value, oldvalue) {
-                                    if (value !== oldvalue) {
+                                scope.$watch('watchData.' + key, function(value, oldvalue) {
+                                    if (angular.isFunction(setAttribute) && value !== oldvalue ) {
                                         setAttribute(scope.$parent, value);
                                     }
                                 });
-                            }
-                        }
+                            }                        }
                     });
 
                     if (attrs.dateDisabled) {
@@ -238,15 +237,26 @@
                     };
 
                     scope.$watch('isOpen', function (value) {
+                        scope.dropdownStyle = {
+                            display: value ? 'block' : 'none'
+                        };
+
                         if (value) {
                             scope.$broadcast('datepicker.focus');
 
-                            scope.position = appendToBody ? $position.offset(element) : $position.position(element);
-                            scope.position.top = scope.position.top + element.prop('offsetHeight');
+                            var position = appendToBody ? $position.offset(element) : $position.position(element);
 
-                            $document.bind('mousedown', documentClickBind);
+                            if (appendToBody) {
+                                scope.dropdownStyle.top = (position.top + element.prop('offsetHeight')) +'px';
+                            } else {
+                                scope.dropdownStyle.top = undefined;
+                            }
+
+                            scope.dropdownStyle.left = position.left + 'px';
+
+                            $document.bind('click', documentClickBind);
                         } else {
-                            $document.unbind('mousedown', documentClickBind);
+                            $document.unbind('click', documentClickBind);
                         }
                     });
 
@@ -292,7 +302,7 @@
                     scope.$on('$destroy', function () {
                         $popup.remove();
                         element.unbind('keydown', keydown);
-                        $document.unbind('mousedown', documentClickBind);
+                        $document.unbind('click', documentClickBind);
                     });
                 }
             };
@@ -305,7 +315,7 @@
             transclude: true,
             templateUrl: 'template/datetime-picker.html',
             link: function (scope, element, attrs) {
-                element.bind('mousedown', function (event) {
+                element.bind('click', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
@@ -320,7 +330,7 @@
             transclude: true,
             templateUrl: 'template/datetime-picker.html',
             link: function (scope, element, attrs) {
-                element.bind('mousedown', function (event) {
+                element.bind('click', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
