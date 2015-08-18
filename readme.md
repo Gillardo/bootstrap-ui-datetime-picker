@@ -10,14 +10,14 @@ To use the directive you must have the following angular-ui bootstrap directives
 * TimePicker
 
 You should already have the ui.bootstrap dependancy included in your app.js file like below, You then need to add ui.bootstrap.datetimepicker, as so
-```sh
+```
 angular.module('app', ['ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 ```
 Download the source from dist/datetime-picker.min.js file and include it in your project.
 
-Or use bower (thank you krico for setup)
+Or use Bower (thank you krico for setup)
 ```
-bower install bootstrap-ui-datetime-picker -S
+bower install --save bootstrap-ui-datetime-picker
 ```
 and link with `bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.min.js`
 
