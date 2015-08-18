@@ -136,7 +136,7 @@ app.controller('MyController', ['$scope', function($scope) {
         e.stopPropagation();
         
         $scope.isOpen = true;
-    }
+    };
 }]);
 ```
 
