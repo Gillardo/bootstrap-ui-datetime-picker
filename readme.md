@@ -88,16 +88,20 @@ Now datetimePicker options are globally set by default.  If you do not state the
 ## Css
 Personally i dont like the look of the angular-ui calendar itself, this is because the buttons are configured to use the btn-default style.  To get round this there are 3 css classes applied to the datetimepicker and depending on the picker that is being shown.  These classes surround the div element that contains the angular-ui datepicker and timepicker.  Using these classes you can change the style of the calendar.  The class are
 
-```.datetime-picker-dropdown```
+```
+.datetime-picker-dropdown
+```
 
 Applied to the dropdown that the pickers are contained within
 
-```.datetime-picker-dropdown > li.date-picker-menu```
-
+```
+.datetime-picker-dropdown > li.date-picker-menu
+```
 Applied when the date picker is visible
 
-```.datetime-picker-dropdown > li.time-picker-menu```
-
+```
+.datetime-picker-dropdown > li.time-picker-menu
+```
 Applied when the time picker is visible
 
 ###### EXAMPLE
