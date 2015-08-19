@@ -57,7 +57,7 @@
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                         '<div date-picker-wrap ng-show="showPicker == \'date\'">' +
-                        '<div datepicker></div>' +
+                        '<div ng-if="isOpen && showPicker == \'date\'" datepicker></div>' +
                         '</div>' +
                         '<div time-picker-wrap ng-show="showPicker == \'time\'">' +
                         '<div timepicker style="margin:0 auto"></div>' +
@@ -66,7 +66,7 @@
                     // get attributes from directive
                     popupEl.attr({
                         'ng-model': 'date',
-                        'ng-change': 'dateSelection()'
+                        'ng-change': 'dateSelection(date)'
                     });
 
                     function cameltoDash(string) {
@@ -236,14 +236,12 @@
                         }
                     };
 
-                    scope.$watch('isOpen', function (value) {
+                    var isOpenWatch = scope.$watch('isOpen', function (value) {
                         scope.dropdownStyle = {
                             display: value ? 'block' : 'none'
                         };
 
                         if (value) {
-                            scope.$broadcast('datepicker.focus');
-
                             var position = appendToBody ? $position.offset(element) : $position.position(element);
 
                             if (appendToBody) {
@@ -254,7 +252,10 @@
 
                             scope.dropdownStyle.left = position.left + 'px';
 
-                            $document.bind('click', documentClickBind);
+                            $timeout(function() {
+                                scope.$broadcast('datepicker.focus');
+                                $document.bind('click', documentClickBind);
+                            }, 0, false);
                         } else {
                             $document.unbind('click', documentClickBind);
                         }
@@ -285,8 +286,11 @@
                         element[0].focus();
                     };
 
-                    scope.changePicker = function (e) {
-                        scope.showPicker = e;
+                    scope.changePicker = function (evt, picker) {
+                        evt.preventDefault();
+                        evt.stopPropagation();
+
+                        scope.showPicker = picker;
                     };
 
                     var $popup = $compile(popupEl)(scope);
@@ -300,6 +304,13 @@
                     }
 
                     scope.$on('$destroy', function () {
+                        if (scope.isOpen === true) {
+                            scope.$apply(function() {
+                                scope.isOpen = false;
+                            });
+                        }
+
+                        isOpenWatch();
                         $popup.remove();
                         element.unbind('keydown', keydown);
                         $document.unbind('click', documentClickBind);
