@@ -57,7 +57,7 @@
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                         '<div date-picker-wrap ng-show="showPicker == \'date\'">' +
-                        '<div ng-if="isOpen && showPicker == \'date\'" datepicker></div>' +
+                        '<div datepicker></div>' +
                         '</div>' +
                         '<div time-picker-wrap ng-show="showPicker == \'time\'">' +
                         '<div timepicker style="margin:0 auto"></div>' +

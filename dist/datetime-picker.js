@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.1.6
-// Released: 2015-08-18 
+// Version: 1.1.7
+// Released: 2015-08-22 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -60,7 +60,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                         '<div date-picker-wrap ng-show="showPicker == \'date\'">' +
-                        '<div ng-if="isOpen && showPicker == \'date\'" datepicker></div>' +
+                        '<div datepicker></div>' +
                         '</div>' +
                         '<div time-picker-wrap ng-show="showPicker == \'time\'">' +
                         '<div timepicker style="margin:0 auto"></div>' +
@@ -239,7 +239,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
                     };
 
-                    scope.$watch('isOpen', function (value) {
+                    var isOpenWatch = scope.$watch('isOpen', function (value) {
                         scope.dropdownStyle = {
                             display: value ? 'block' : 'none'
                         };
@@ -307,6 +307,13 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
 
                     scope.$on('$destroy', function () {
+                        if (scope.isOpen === true) {
+                            scope.$apply(function() {
+                                scope.isOpen = false;
+                            });
+                        }
+
+                        isOpenWatch();
                         $popup.remove();
                         element.unbind('keydown', keydown);
                         $document.unbind('click', documentClickBind);
