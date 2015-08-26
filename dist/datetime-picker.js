@@ -1,5 +1,5 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.2.0
+// Version: 1.2.1
 // Released: 2015-08-26 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
@@ -404,7 +404,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
 
                         $popup.remove();
-                        element.unbind('keydown', keydown);
+                        element.unbind('keydown', inputKeydownBind);
                         $document.unbind('click', documentClickBind);
                     });
                 }

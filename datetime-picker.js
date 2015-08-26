@@ -401,7 +401,7 @@
                         }
 
                         $popup.remove();
-                        element.unbind('keydown', keydown);
+                        element.unbind('keydown', inputKeydownBind);
                         $document.unbind('click', documentClickBind);
                     });
                 }
