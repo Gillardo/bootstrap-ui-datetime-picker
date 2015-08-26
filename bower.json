@@ -27,5 +27,8 @@
     "gruntfile.js",
     "package.json",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.13.2"
+  }
 }
