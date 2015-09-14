@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.2.1
-// Released: 2015-08-26 
+// Version: 1.2.2
+// Released: 2015-09-14 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -227,11 +227,17 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // Inner change
                     scope.dateSelection = function (dt) {
 
-                        // check which picker is being shown, if its date, all is fine and this is the date
-                        // we will use, if its the timePicker and enableDate = true, we need to merge
-                        // the values, else timePicker will reset the date
-                        if (scope.enableDate && scope.enableTime && scope.showPicker === 'time') {
-                            if (scope.date && scope.date !== null || dt || dt != null) {
+                        // check if timePicker is being shown and merge dates, so that the date
+                        // part is never changed, only the time
+                        if (scope.enableTime && scope.showPicker === 'time') {
+
+                            // only proceed if dt is a date
+                            if (dt || dt != null) {
+                                // check if our scope.date is null, and if so, set to todays date
+                                if (!angular.isDefined(scope.date) || scope.date == null) {
+                                    scope.date = new Date();
+                                }
+
                                 // dt will not be undefined if the now or today button is pressed
                                 if (dt && dt != null) {
                                     // get the existing date and update the time
@@ -279,7 +285,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     });
 
                     var documentClickBind = function (event) {
-                        if (scope.isOpen && event.target !== element[0]) {
+                        if (scope.isOpen && !(element[0].contains(event.target) || $popup[0].contains(event.target))) {
                             scope.$apply(function () {
                                 scope.close();
                             });

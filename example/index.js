@@ -8,8 +8,8 @@ app.controller('MyController', ['$scope', function($scope) {
     in10Days.setDate(in10Days.getDate() + 10);
 
     this.dates = {
-        date1: new Date('01 Mar 2015 00:00:00.000'),
-        date2: new Date(),
+        date1: new Date('2015-03-01T00:00:00Z'),
+        date2: new Date('2015-07-01T12:30:00Z'),
         date3: new Date(),
         date4: new Date(),
         date5: in10Days,
@@ -50,9 +50,6 @@ app.controller('MyController', ['$scope', function($scope) {
     };
 
     this.openCalendar = function(e, date) {
-        e.preventDefault();
-        e.stopPropagation();
-
         that.open[date] = true;
     };
 
