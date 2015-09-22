@@ -174,12 +174,12 @@
                         } else if (angular.isString(viewValue)) {
                             var date = dateParser.parse(viewValue, dateFormat, scope.date);
                             if (isNaN(date)) {
-                                return undefined;
+                                return null;
                             } else {
                                 return date;
                             }
                         } else {
-                            return undefined;
+                            return null;
                         }
                     }
 
