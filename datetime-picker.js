@@ -186,7 +186,7 @@
                     function validator(modelValue, viewValue) {
                         var value = modelValue || viewValue;
 
-                        if (!attrs.ngRequired && !value) {
+                        if (!(attrs.ngRequired||attrs.required) && !value) {
                             return true;
                         }
 
@@ -197,7 +197,7 @@
                             return true;
                         } else if (angular.isDate(value) && !isNaN(value)) {
                             return true;
-                        } else if (angular.isDate(new Date(value))) {
+                        } else if (angular.isDate(new Date(value))&&!isNaN(new Date(value).valueOf())) {
                             return true;
                         } else if (angular.isString(value)) {
                             var date = dateParser.parse(value, dateFormat);
