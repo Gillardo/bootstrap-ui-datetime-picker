@@ -342,8 +342,10 @@
                     scope.isDisabled = function(date) {
                         var isToday = (date == 'today');
 
-                        if (date === 'today' || date === 'now')
+                        if (date === 'today' || date === 'now') {
                             date = new Date();
+                            date.setHours(0, 0, 0, 0);
+                        }
 
                         if (attrs.dateDisabled) {
                             return scope.dateDisabled({date: date, mode: scope.watchData['datepickerMode']});
