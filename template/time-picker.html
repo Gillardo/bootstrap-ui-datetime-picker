@@ -5,7 +5,7 @@
     <li ng-if="showButtonBar" style="padding:5px">
         <span class="btn-group pull-left" style="margin-right:10px">
             <button type="button" class="btn btn-sm btn-info" ng-click="select('now')" ng-disabled="isDisabled('now')">{{ getText('now') }}</button>
-            <button type="button" class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</button>
+            <button type="button" class="btn btn-sm btn-danger" ng-click="select('clear')">{{ getText('clear') }}</button>
         </span>
         <span class="btn-group pull-right">
             <button ng-if="enableDate" type="button" class="btn btn-sm btn-default" ng-click="changePicker($event, 'date')">{{ getText('date')}}</button>

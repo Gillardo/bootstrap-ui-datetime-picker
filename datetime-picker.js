@@ -259,11 +259,9 @@
                         element.val(date);
                         ngModel.$setViewValue(date);
 
-                        if (dt === null) {
-                            scope.close();
-                        } else if (closeOnDateSelection) {
+                        if (closeOnDateSelection) {
                             // do not close when using timePicker as make impossible to choose a time
-                            if (scope.showPicker != 'time') {
+                            if (scope.showPicker != 'time' && date != null) {
                                 // if time is enabled, swap to timePicker
                                 if (scope.enableTime) {
                                     // need to delay this, else timePicker never shown
@@ -354,11 +352,12 @@
                         }
                     };
 
-                    scope.select = function (date) {
+                    scope.select = function (opt) {
 
-                        var isNow = date === 'now';
+                        var date = null;
+                        var isNow = opt === 'now';
 
-                        if (date === 'today' || date == 'now') {
+                        if (opt === 'today' || opt == 'now') {
                             var now = new Date();
                             if (angular.isDate(scope.date)) {
                                 date = new Date(scope.date);
@@ -370,6 +369,9 @@
                         }
 
                         scope.dateSelection(date);
+
+                        if (opt == 'clear')
+                            scope.close();
                     };
 
                     scope.close = function () {
