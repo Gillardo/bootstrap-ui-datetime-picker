@@ -18,7 +18,7 @@
         appendToBody: false,
         showButtonBar: true
     })
-    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'uiDatetimePickerConfig', '$rootScope',
+    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, uiDatetimePickerConfig, $rootScope) {
             return {
                 restrict: 'A',
@@ -77,10 +77,10 @@
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                         '<div date-picker-wrap>' +
-                        '<div datepicker></div>' +
+                        '<div uib-datepicker></div>' +
                         '</div>' +
                         '<div time-picker-wrap>' +
-                        '<div timepicker style="margin:0 auto"></div>' +
+                        '<div uib-timepicker style="margin:0 auto"></div>' +
                         '</div>');
 
                     // get attributes from directive
