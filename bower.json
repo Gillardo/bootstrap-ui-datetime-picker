@@ -29,6 +29,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular-bootstrap": "~0.13.2"
+    "angular-bootstrap": "~0.14.0"
   }
 }

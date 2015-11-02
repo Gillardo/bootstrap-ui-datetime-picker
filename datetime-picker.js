@@ -19,7 +19,7 @@
         showButtonBar: true
     })
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
-        function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, uiDatetimePickerConfig, $rootScope) {
+        function ($compile, $parse, $document, $timeout, $uibPosition, dateFilter, uibDateParser, uiDatetimePickerConfig, $rootScope) {
             return {
                 restrict: 'A',
                 require: 'ngModel',
@@ -172,7 +172,7 @@
                         } else if (angular.isDate(viewValue) && !isNaN(viewValue)) {
                             return viewValue;
                         } else if (angular.isString(viewValue)) {
-                            var date = dateParser.parse(viewValue, dateFormat, scope.date);
+                            var date = uibDateParser.parse(viewValue, dateFormat, scope.date);
                             if (isNaN(date)) {
                                 return null;
                             } else {
@@ -200,7 +200,7 @@
                         } else if (angular.isDate(new Date(value)) && !isNaN(new Date(value).valueOf())) {
                             return true;
                         } else if (angular.isString(value)) {
-                            var date = dateParser.parse(value, dateFormat);
+                            var date = uibDateParser.parse(value, dateFormat);
                             return !isNaN(date);
                         } else {
                             return false;
@@ -278,7 +278,7 @@
 
                     // Detect changes in the view from the text box
                     ngModel.$viewChangeListeners.push(function() {
-                        scope.date = dateParser.parse(ngModel.$viewValue, dateFormat, scope.date);
+                        scope.date = uibDateParser.parse(ngModel.$viewValue, dateFormat, scope.date);
                     });
 
                     var documentClickBind = function (event) {
@@ -320,7 +320,7 @@
                         };
 
                         if (value) {
-                            var position = appendToBody ? $position.offset(element) : $position.position(element);
+                            var position = appendToBody ? $uibPosition.offset(element) : $uibPosition.position(element);
 
                             if (appendToBody) {
                                 scope.dropdownStyle.top = (position.top + element.prop('offsetHeight')) +'px';
