@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 1.2.6
-// Released: 2015-10-21 
+// Version: 1.2.7
+// Released: 2015-10-26 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -21,7 +21,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         appendToBody: false,
         showButtonBar: true
     })
-    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$position', 'dateFilter', 'dateParser', 'uiDatetimePickerConfig', '$rootScope',
+    .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function ($compile, $parse, $document, $timeout, $position, dateFilter, dateParser, uiDatetimePickerConfig, $rootScope) {
             return {
                 restrict: 'A',
@@ -80,10 +80,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // popup element used to display calendar
                     var popupEl = angular.element('' +
                         '<div date-picker-wrap>' +
-                        '<div datepicker></div>' +
+                        '<div uib-datepicker></div>' +
                         '</div>' +
                         '<div time-picker-wrap>' +
-                        '<div timepicker style="margin:0 auto"></div>' +
+                        '<div uib-timepicker style="margin:0 auto"></div>' +
                         '</div>');
 
                     // get attributes from directive
@@ -345,8 +345,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.isDisabled = function(date) {
                         var isToday = (date == 'today');
 
-                        if (date === 'today' || date === 'now')
+                        if (date === 'today' || date === 'now') {
                             date = new Date();
+                            date.setHours(0, 0, 0, 0);
+                        }
 
                         if (attrs.dateDisabled) {
                             return scope.dateDisabled({date: date, mode: scope.watchData['datepickerMode']});
