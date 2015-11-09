@@ -6,6 +6,7 @@
     "Gillardo <darren.gillard81@gmail.com>"
   ],
   "description": "AngularJs directive to use a date and/or time picker as a dropdown from an input",
+  "license": "MIT",
   "main": [
     "dist/datetime-picker.min.js"
   ],
@@ -16,7 +17,6 @@
     "bootstrap",
     "angular-ui"
   ],
-  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
