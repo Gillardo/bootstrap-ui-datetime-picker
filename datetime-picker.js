@@ -120,11 +120,19 @@
                     // timepicker element
                     var timepickerEl = angular.element(popupEl.children()[1]);
 
+                    // timepicker element
+                    var timepickerEl = angular.element(popupEl.children()[1]);
+
                     if (attrs.timepickerOptions) {
                         var options = scope.$parent.$eval(attrs.timepickerOptions);
 
                         angular.forEach(options, function (value, option) {
-                            timepickerEl.attr(cameltoDash(option), value);
+                            if (option == 'min' || option == 'max')
+                                timepickerEl.attr(cameltoDash(option), '\'' + value + '\'');
+                            else if (option == 'hstep' || option == 'mstep')
+                                timepickerEl.attr(cameltoDash(option), '[' + value + ']');
+                            else
+                                timepickerEl.attr(cameltoDash(option), value);
                         });
                     }
 
