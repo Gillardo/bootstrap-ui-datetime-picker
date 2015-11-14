@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.0.2
-// Released: 2015-11-13 
+// Version: 2.0.3
+// Released: 2015-11-14 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -120,44 +120,25 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         });
                     }
 
-                    // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1]);
-
-                    // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1]);
-
-                    if (attrs.timepickerOptions) {
-                        var options = scope.$parent.$eval(attrs.timepickerOptions);
-
-                        angular.forEach(options, function (value, option) {
-                            if (option == 'min' || option == 'max')
-                                timepickerEl.attr(cameltoDash(option), '\'' + value + '\'');
-                            else if (option == 'hstep' || option == 'mstep')
-                                timepickerEl.attr(cameltoDash(option), '[' + value + ']');
-                            else
-                                timepickerEl.attr(cameltoDash(option), value);
-                        });
-                    }
-
                     // set datepickerMode to day by default as need to create watch
                     // else disabled cannot pass in mode
                     if (!angular.isDefined(attrs['datepickerMode'])) {
                         attrs['datepickerMode'] = 'day';
                     }
 
-                    scope.watchData = {};
+                    scope.dpData = {};
                     angular.forEach(['minMode', 'maxMode', 'minDate', 'maxDate', 'datepickerMode', 'initDate', 'shortcutPropagation'], function(key) {
                         if (attrs[key]) {
                             var getAttribute = $parse(attrs[key]);
                             scope.$parent.$watch(getAttribute, function(value) {
-                                scope.watchData[key] = value;
+                                scope.dpData[key] = value;
                             });
-                            datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
+                            datepickerEl.attr(cameltoDash(key), 'dpData.' + key);
 
                             // Propagate changes from datepicker to outside
                             if (key === 'datepickerMode') {
                                 var setAttribute = getAttribute.assign;
-                                scope.$watch('watchData.' + key, function(value, oldvalue) {
+                                scope.$watch('dpData.' + key, function(value, oldvalue) {
                                     if (angular.isFunction(setAttribute) && value !== oldvalue) {
                                         setAttribute(scope.$parent, value);
                                     }
@@ -168,6 +149,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                     if (attrs.dateDisabled) {
                         datepickerEl.attr('date-disabled', 'dateDisabled({ date: date, mode: mode })');
+                    }
+
+                    // timepicker element
+                    var timepickerEl = angular.element(popupEl.children()[1]);
+
+                    scope.tpData = {};
+                    if (attrs.timepickerOptions) {
+                        var options = scope.$parent.$eval(attrs.timepickerOptions);
+
+                        angular.forEach(options, function (value, option) {
+                            scope.tpData[option] = value;
+                            timepickerEl.attr(cameltoDash(option), 'tpData.' + option);
+                        });
                     }
 
                     // do not check showWeeks attr, as should be used via datePickerOptions
@@ -359,7 +353,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
 
                         if (attrs.dateDisabled) {
-                            return scope.dateDisabled({date: date, mode: scope.watchData['datepickerMode']});
+                            return scope.dateDisabled({date: date, mode: scope.dpData['datepickerMode']});
                         } else {
                             return false;
                         }
@@ -448,7 +442,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             templateUrl: 'template/time-picker.html'
         };
     });
-
 angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
   'use strict';
 

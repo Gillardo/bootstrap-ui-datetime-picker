@@ -117,44 +117,25 @@
                         });
                     }
 
-                    // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1]);
-
-                    // timepicker element
-                    var timepickerEl = angular.element(popupEl.children()[1]);
-
-                    if (attrs.timepickerOptions) {
-                        var options = scope.$parent.$eval(attrs.timepickerOptions);
-
-                        angular.forEach(options, function (value, option) {
-                            if (option == 'min' || option == 'max')
-                                timepickerEl.attr(cameltoDash(option), '\'' + value + '\'');
-                            else if (option == 'hstep' || option == 'mstep')
-                                timepickerEl.attr(cameltoDash(option), '[' + value + ']');
-                            else
-                                timepickerEl.attr(cameltoDash(option), value);
-                        });
-                    }
-
                     // set datepickerMode to day by default as need to create watch
                     // else disabled cannot pass in mode
                     if (!angular.isDefined(attrs['datepickerMode'])) {
                         attrs['datepickerMode'] = 'day';
                     }
 
-                    scope.watchData = {};
+                    scope.dpData = {};
                     angular.forEach(['minMode', 'maxMode', 'minDate', 'maxDate', 'datepickerMode', 'initDate', 'shortcutPropagation'], function(key) {
                         if (attrs[key]) {
                             var getAttribute = $parse(attrs[key]);
                             scope.$parent.$watch(getAttribute, function(value) {
-                                scope.watchData[key] = value;
+                                scope.dpData[key] = value;
                             });
-                            datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
+                            datepickerEl.attr(cameltoDash(key), 'dpData.' + key);
 
                             // Propagate changes from datepicker to outside
                             if (key === 'datepickerMode') {
                                 var setAttribute = getAttribute.assign;
-                                scope.$watch('watchData.' + key, function(value, oldvalue) {
+                                scope.$watch('dpData.' + key, function(value, oldvalue) {
                                     if (angular.isFunction(setAttribute) && value !== oldvalue) {
                                         setAttribute(scope.$parent, value);
                                     }
@@ -165,6 +146,19 @@
 
                     if (attrs.dateDisabled) {
                         datepickerEl.attr('date-disabled', 'dateDisabled({ date: date, mode: mode })');
+                    }
+
+                    // timepicker element
+                    var timepickerEl = angular.element(popupEl.children()[1]);
+
+                    scope.tpData = {};
+                    if (attrs.timepickerOptions) {
+                        var options = scope.$parent.$eval(attrs.timepickerOptions);
+
+                        angular.forEach(options, function (value, option) {
+                            scope.tpData[option] = value;
+                            timepickerEl.attr(cameltoDash(option), 'tpData.' + option);
+                        });
                     }
 
                     // do not check showWeeks attr, as should be used via datePickerOptions
@@ -356,7 +350,7 @@
                         }
 
                         if (attrs.dateDisabled) {
-                            return scope.dateDisabled({date: date, mode: scope.watchData['datepickerMode']});
+                            return scope.dateDisabled({date: date, mode: scope.dpData['datepickerMode']});
                         } else {
                             return false;
                         }
