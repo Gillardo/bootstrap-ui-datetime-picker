@@ -1,0 +1,41 @@
+<!doctype html>
+<html ng-app="myapp">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>Fiddle</title>
+
+        <!-- bower:css-->
+        <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css" />
+        <!-- endbower -->
+
+    </head>
+
+    <body>
+        <div ng-controller="MainCtrl">
+          <div class="date" style="width:300px">
+            <label>Date 1</label>
+            <div class="input-group">
+              <input type="text" class="form-control" datetime-picker="MM/dd/yyyy hh:mm a" ng-model="date.value" is-open="date.show"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="date.show = true">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div>
+            {{ date | json }}
+          </div>
+        </div>
+        <!-- bower:js-->
+        <script src="components/jquery/dist/jquery.js"></script>
+        <script src="components/angular/angular.js"></script>
+        <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="components/bootstrap/dist/js/bootstrap.js"></script>
+        <!-- endbower -->
+        <script type="text/javascript" src="dist/datetime-picker.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>

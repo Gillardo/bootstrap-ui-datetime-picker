@@ -3,3 +3,4 @@ node_modules
 .plugin
 .metadata/*
 *.iml
+web/components
