@@ -284,7 +284,7 @@
                     });
 
                     var documentClickBind = function (event) {
-                        if (scope.isOpen && !(element[0].contains(event.target) || $popup[0].contains(event.target))) {
+                        if (scope.isOpen && !(element[0].contains(event.target) || ($popup[0].contains && $popup[0].contains(event.target)))) {
                             scope.$apply(function () {
                                 scope.close();
                             });
