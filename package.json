@@ -7,9 +7,7 @@
   ],
   "description": "AngularJs directive to use a date and/or time picker as a dropdown from an input",
   "license": "MIT",
-  "main": [
-    "dist/datetime-picker.js"
-  ],
+  "main": "dist/datetime-picker.js",
   "dependencies": {
     "angular": "^1.3.0",
     "angular-ui-bootstrap": "~0.14.0"
