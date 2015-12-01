@@ -37,6 +37,7 @@ You have the following properties available to use with the directive.  All are 
 * dateDisabled
 * datepickerOptions (object)
 * timepickerOptions (object)
+* defaultTime (string)
  
 ##### isOpen
 Whether the popup/dropdown is visible or not. Defaults to false
@@ -64,6 +65,8 @@ From angularUI site -> An optional expression to disable visible options based o
 Object to configure settings for the datepicker (can be found on angularUI site)
 ##### timepickerOptions
 Object to configure settings for the timepicker (can be found on angularUI site)
+##### defaultTime
+Initial time when a new date is selected (e.g. "14:00:00" or "2:00 pm")
 
 ## uiDatetimePickerConfig
 Now datetimePicker options are globally set by default.  If you do not state the values within the declaration, the config options are used instead.  Here are the default options

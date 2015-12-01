@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.0.3
-// Released: 2015-11-14 
+// Released: 2015-12-01 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -36,7 +36,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     timeText: '@',
                     clearText: '@',
                     closeText: '@',
-                    dateDisabled: '&'
+                    dateDisabled: '&',
+                    defaultTime: '@'
                 },
                 link: function (scope, element, attrs, ngModel) {
                     var dateFormat = uiDatetimePickerConfig.dateFormat,
@@ -256,6 +257,15 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
 
                         if (angular.isDefined(dt)) {
+                            if (attrs.defaultTime && !scope.date) {
+                                var t = new Date("2001-01-01 " + scope.defaultTime);
+                                if (!isNaN(t)) {
+                                    dt.setHours(t.getHours());
+                                    dt.setMinutes(t.getMinutes());
+                                    dt.setSeconds(t.getSeconds());
+                                    dt.setMilliseconds(t.getMilliseconds());
+                                }
+                            }
                             scope.date = dt;
                         }
 
@@ -287,11 +297,18 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     });
 
                     var documentClickBind = function (event) {
-                        if (scope.isOpen && !(element[0].contains(event.target) || $popup[0].contains(event.target))) {
-                            scope.$apply(function () {
-                                scope.close();
-                            });
-                        }
+                      var popup = $popup[0];
+                      var dpContainsTarget = element[0].contains(event.target);
+
+                      // The popup node may not be an element node
+                      // In some browsers (IE only) element nodes have the 'contains' function
+                      var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
+
+                      if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
+                        scope.$apply(function() {
+                          scope.isOpen = false;
+                        });
+                      }
                     };
 
                     var inputKeydownBind = function(evt) {
@@ -442,6 +459,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             templateUrl: 'template/time-picker.html'
         };
     });
+
 angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
   'use strict';
 
