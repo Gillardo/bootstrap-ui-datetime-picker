@@ -1,5 +1,5 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.0.3
+// Version: 2.0.4
 // Released: 2015-12-07 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
@@ -20,7 +20,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         timeText: 'Time',
         closeOnDateSelection: true,
         appendToBody: false,
-        showButtonBar: true
+        showButtonBar: true,
+        altInputFormats: []
     })
     .directive('datetimePicker', ['$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function ($compile, $parse, $document, $timeout, $uibPosition, dateFilter, uibDateParser, uiDatetimePickerConfig, $rootScope) {
@@ -42,7 +43,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 link: function (scope, element, attrs, ngModel) {
                     var dateFormat = uiDatetimePickerConfig.dateFormat,
                         closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
-                        appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody;
+                        appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
+                        altInputFormats = angular.isDefined(attrs.altInputFormats) ? scope.$parent.$eval(attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats;
 
                     scope.dpData = {};
                     scope.tpData = {};
@@ -177,7 +179,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                     // Detect changes in the view from the text box
                     ngModel.$viewChangeListeners.push(function() {
-                        scope.date = uibDateParser.parse(ngModel.$viewValue, dateFormat, scope.date);
+                        scope.date = parseDateString(ngModel.$viewValue);
                     });
 
                     element.bind('keydown', inputKeydownBind);
@@ -285,7 +287,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             scope.dropdownStyle.left = position.left + 'px';
 
                             $timeout(function() {
-                                scope.$broadcast('datepicker.focus');
+                                scope.$broadcast('uib:datepicker.focus');
                                 $document.bind('click', documentClickBind);
                             }, 0, false);
                         } else {
@@ -294,18 +296,16 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     });
 
                     scope.isDisabled = function(date) {
-                        var isToday = (date == 'today');
-
                         if (date === 'today' || date === 'now') {
                             date = new Date();
-                            date.setHours(0, 0, 0, 0);
                         }
 
-                        if (attrs.dateDisabled) {
-                            return scope.dateDisabled({date: date, mode: scope.dpData['datepickerMode']});
-                        } else {
-                            return false;
-                        }
+                        return scope.dpData.minDate && scope.compare(date, scope.dpData.minDate) < 0 ||
+                            scope.dpData.maxDate && scope.compare(date, scope.dpData.maxDate) > 0;
+                    };
+
+                    scope.compare = function(date1, date2) {
+                        return new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()) - new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
                     };
 
                     scope.select = function (opt) {
@@ -397,6 +397,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         return string.replace(/([A-Z])/g, function ($1) { return '-' + $1.toLowerCase(); });
                     }
 
+                    function parseDateString(viewValue) {
+                        var date = uibDateParser.parse(viewValue, dateFormat, scope.date);
+                        if (isNaN(date)) {
+                            for (var i = 0; i < altInputFormats.length; i++) {
+                                date = uibDateParser.parse(viewValue, altInputFormats[i], scope.date);
+                                if (!isNaN(date)) {
+                                    return date;
+                                }
+                            }
+                        }
+                        return date;
+                    }
+
                     function parseDate(viewValue) {
                         if (angular.isNumber(viewValue)) {
                             // presumably timestamp to date object
@@ -408,14 +421,14 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         } else if (angular.isDate(viewValue) && !isNaN(viewValue)) {
                             return viewValue;
                         } else if (angular.isString(viewValue)) {
-                            var date = uibDateParser.parse(viewValue, dateFormat, scope.date);
+                            var date = parseDateString(viewValue);
                             if (isNaN(date)) {
-                                return null;
-                            } else {
-                                return date;
+                                return undefined;
                             }
+
+                            return date;
                         } else {
-                            return null;
+                            return undefined;
                         }
                     }
 
@@ -429,6 +442,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         if (angular.isNumber(value)) {
                             value = new Date(value);
                         }
+
                         if (!value) {
                             return true;
                         } else if (angular.isDate(value) && !isNaN(value)) {
@@ -436,8 +450,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         } else if (angular.isDate(new Date(value)) && !isNaN(new Date(value).valueOf())) {
                             return true;
                         } else if (angular.isString(value)) {
-                            var date = uibDateParser.parse(value, dateFormat);
-                            return !isNaN(date);
+                            return !isNaN(parseDateString(viewValue));
                         } else {
                             return false;
                         }
