@@ -84,7 +84,8 @@ Now datetimePicker options are globally set by default.  If you do not state the
     timeText: 'Time',
     closeOnDateSelection: true,
     appendToBody: false,
-    showButtonBar: true
+    showButtonBar: true,
+    defaultTime: '00:00 PM'
 })
 ```
 
