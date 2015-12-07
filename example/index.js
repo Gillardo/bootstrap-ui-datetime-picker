@@ -9,13 +9,14 @@ app.controller('MyController', ['$scope', function($scope) {
 
     this.dates = {
         date1: new Date('2015-03-01T00:00:00Z'),
-        date2: new Date('2015-07-01T12:30:00Z'),
+        date2: new Date('2015-03-01T12:30:00Z'),
         date3: new Date(),
         date4: new Date(),
         date5: in10Days,
         date6: new Date(),
         date7: new Date(),
-        date8: new Date()
+        date8: new Date(),
+        date9: null
     };
 
     this.open = {
@@ -26,7 +27,8 @@ app.controller('MyController', ['$scope', function($scope) {
         date5: false,
         date6: false,
         date7: false,
-        date8: false
+        date8: false,
+        date9: false
     };
 
     // Disable weekend selection
@@ -54,7 +56,7 @@ app.controller('MyController', ['$scope', function($scope) {
     };
 
     // watch date4 and date5 to calculate difference
-    this.calculateWatch = $scope.$watch(function() {
+    var unwatch = $scope.$watch(function() {
         return that.dates;
     }, function() {
         if (that.dates.date4 && that.dates.date5) {
@@ -66,6 +68,6 @@ app.controller('MyController', ['$scope', function($scope) {
     }, true);
 
     $scope.$on('$destroy', function() {
-        that.calculateWatch();
+        unwatch();
     });
 }]);
