@@ -33,7 +33,8 @@
                     timeText: '@',
                     clearText: '@',
                     closeText: '@',
-                    dateDisabled: '&'
+                    dateDisabled: '&',
+                    defaultTime: '@'
                 },
                 link: function (scope, element, attrs, ngModel) {
                     var dateFormat = uiDatetimePickerConfig.dateFormat,
@@ -253,6 +254,15 @@
                         }
 
                         if (angular.isDefined(dt)) {
+                            if (attrs.defaultTime && !scope.date) {
+                                var t = new Date("2001-01-01 " + scope.defaultTime);
+                                if (!isNaN(t)) {
+                                    dt.setHours(t.getHours());
+                                    dt.setMinutes(t.getMinutes());
+                                    dt.setSeconds(t.getSeconds());
+                                    dt.setMilliseconds(t.getMilliseconds());
+                                }
+                            }
                             scope.date = dt;
                         }
 
