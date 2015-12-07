@@ -1,9 +1,10 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.0.3
-// Released: 2015-12-01 
+// Released: 2015-12-07 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
+        defaultTime: '00:00 PM',
         html5Types: {
             date: 'yyyy-MM-dd',
             'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
@@ -36,14 +37,15 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     timeText: '@',
                     clearText: '@',
                     closeText: '@',
-                    dateDisabled: '&',
-                    defaultTime: '@'
+                    dateDisabled: '&'
                 },
                 link: function (scope, element, attrs, ngModel) {
                     var dateFormat = uiDatetimePickerConfig.dateFormat,
                         closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
                         appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody;
 
+                    scope.dpData = {};
+                    scope.tpData = {};
                     scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : uiDatetimePickerConfig.showButtonBar;
 
                     // determine which pickers should be available. Defaults to date and time
@@ -53,12 +55,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // default picker view
                     scope.showPicker = scope.enableDate ? 'date' : 'time';
 
-                    // get text
-                    scope.getText = function (key) {
-                        return scope[key + 'Text'] || uiDatetimePickerConfig[key + 'Text'];
-                    };
-
                     var isHtml5DateInput = false;
+
                     if (uiDatetimePickerConfig.html5Types[attrs.type]) {
                         dateFormat = uiDatetimePickerConfig.html5Types[attrs.type];
                         isHtml5DateInput = true;
@@ -93,10 +91,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         'ng-change': 'dateSelection(date)'
                     });
 
-                    function cameltoDash(string) {
-                        return string.replace(/([A-Z])/g, function ($1) { return '-' + $1.toLowerCase(); });
-                    }
-
                     // datepicker element
                     var datepickerEl = angular.element(popupEl.children()[0]);
 
@@ -127,7 +121,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         attrs['datepickerMode'] = 'day';
                     }
 
-                    scope.dpData = {};
                     angular.forEach(['minMode', 'maxMode', 'minDate', 'maxDate', 'datepickerMode', 'initDate', 'shortcutPropagation'], function(key) {
                         if (attrs[key]) {
                             var getAttribute = $parse(attrs[key]);
@@ -155,7 +148,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     // timepicker element
                     var timepickerEl = angular.element(popupEl.children()[1]);
 
-                    scope.tpData = {};
                     if (attrs.timepickerOptions) {
                         var options = scope.$parent.$eval(attrs.timepickerOptions);
 
@@ -166,52 +158,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
 
                     // do not check showWeeks attr, as should be used via datePickerOptions
-
-                    function parseDate(viewValue) {
-                        if (angular.isNumber(viewValue)) {
-                            // presumably timestamp to date object
-                            viewValue = new Date(viewValue);
-                        }
-
-                        if (!viewValue) {
-                            return null;
-                        } else if (angular.isDate(viewValue) && !isNaN(viewValue)) {
-                            return viewValue;
-                        } else if (angular.isString(viewValue)) {
-                            var date = uibDateParser.parse(viewValue, dateFormat, scope.date);
-                            if (isNaN(date)) {
-                                return null;
-                            } else {
-                                return date;
-                            }
-                        } else {
-                            return null;
-                        }
-                    }
-
-                    function validator(modelValue, viewValue) {
-                        var value = modelValue || viewValue;
-
-                        if (!(attrs.ngRequired || attrs.required) && !value) {
-                            return true;
-                        }
-
-                        if (angular.isNumber(value)) {
-                            value = new Date(value);
-                        }
-                        if (!value) {
-                            return true;
-                        } else if (angular.isDate(value) && !isNaN(value)) {
-                            return true;
-                        } else if (angular.isDate(new Date(value)) && !isNaN(new Date(value).valueOf())) {
-                            return true;
-                        } else if (angular.isString(value)) {
-                            var date = uibDateParser.parse(value, dateFormat);
-                            return !isNaN(date);
-                        } else {
-                            return false;
-                        }
-                    }
 
                     if (!isHtml5DateInput) {
                         // Internal API to maintain the correct ng-invalid-[key] class
@@ -228,6 +174,28 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             return value;
                         });
                     }
+
+                    // Detect changes in the view from the text box
+                    ngModel.$viewChangeListeners.push(function() {
+                        scope.date = uibDateParser.parse(ngModel.$viewValue, dateFormat, scope.date);
+                    });
+
+                    element.bind('keydown', inputKeydownBind);
+
+                    var $popup = $compile(popupEl)(scope);
+                    // Prevent jQuery cache memory leak (template is now redundant after linking)
+                    popupEl.remove();
+
+                    if (appendToBody) {
+                        $document.find('body').append($popup);
+                    } else {
+                        element.after($popup);
+                    }
+
+                    // get text
+                    scope.getText = function (key) {
+                        return scope[key + 'Text'] || uiDatetimePickerConfig[key + 'Text'];
+                    };
 
                     // Inner change
                     scope.dateSelection = function (dt) {
@@ -257,8 +225,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
 
                         if (angular.isDefined(dt)) {
-                            if (attrs.defaultTime && !scope.date) {
-                                var t = new Date("2001-01-01 " + scope.defaultTime);
+                            if (!scope.date) {
+                                var defaultTime = angular.isDefined(attrs.defaultTime) ? attrs.defaultTime : uiDatetimePickerConfig.defaultTime;
+                                var t = new Date('2001-01-01 ' + defaultTime);
+
                                 if (!isNaN(t)) {
                                     dt.setHours(t.getHours());
                                     dt.setMinutes(t.getMinutes());
@@ -290,44 +260,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
 
                     };
-
-                    // Detect changes in the view from the text box
-                    ngModel.$viewChangeListeners.push(function() {
-                        scope.date = uibDateParser.parse(ngModel.$viewValue, dateFormat, scope.date);
-                    });
-
-                    var documentClickBind = function (event) {
-                      var popup = $popup[0];
-                      var dpContainsTarget = element[0].contains(event.target);
-
-                      // The popup node may not be an element node
-                      // In some browsers (IE only) element nodes have the 'contains' function
-                      var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
-
-                      if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
-                        scope.$apply(function() {
-                          scope.isOpen = false;
-                        });
-                      }
-                    };
-
-                    var inputKeydownBind = function(evt) {
-                        if (evt.which === 27 && scope.isOpen) {
-                            evt.preventDefault();
-                            evt.stopPropagation();
-                            scope.$apply(function() {
-                                scope.close();
-                            });
-                            element[0].focus();
-                        } else if (evt.which === 40 && !scope.isOpen) {
-                            evt.preventDefault();
-                            evt.stopPropagation();
-                            scope.$apply(function() {
-                                scope.isOpen = true;
-                            });
-                        }
-                    };
-                    element.bind('keydown', inputKeydownBind);
 
                     scope.keydown = function(evt) {
                         if (evt.which === 27) {
@@ -415,16 +347,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         scope.showPicker = picker;
                     };
 
-                    var $popup = $compile(popupEl)(scope);
-                    // Prevent jQuery cache memory leak (template is now redundant after linking)
-                    popupEl.remove();
-
-                    if (appendToBody) {
-                        $document.find('body').append($popup);
-                    } else {
-                        element.after($popup);
-                    }
-
                     scope.$on('$destroy', function () {
                         if (scope.isOpen === true) {
                             if (!$rootScope.$$phase) {
@@ -438,6 +360,88 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         element.unbind('keydown', inputKeydownBind);
                         $document.unbind('click', documentClickBind);
                     });
+
+                    function documentClickBind(evt) {
+                        var popup = $popup[0];
+                        var dpContainsTarget = element[0].contains(evt.target);
+
+                        // The popup node may not be an element node
+                        // In some browsers (IE only) element nodes have the 'contains' function
+                        var popupContainsTarget = popup.contains !== undefined && popup.contains(evt.target);
+
+                        if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
+                            scope.$apply(function() {
+                                scope.isOpen = false;
+                            });
+                        }
+                    }
+
+                    function inputKeydownBind (evt) {
+                        if (evt.which === 27 && scope.isOpen) {
+                            evt.preventDefault();
+                            evt.stopPropagation();
+                            scope.$apply(function() {
+                                scope.close();
+                            });
+                            element[0].focus();
+                        } else if (evt.which === 40 && !scope.isOpen) {
+                            evt.preventDefault();
+                            evt.stopPropagation();
+                            scope.$apply(function() {
+                                scope.isOpen = true;
+                            });
+                        }
+                    }
+
+                    function cameltoDash(string) {
+                        return string.replace(/([A-Z])/g, function ($1) { return '-' + $1.toLowerCase(); });
+                    }
+
+                    function parseDate(viewValue) {
+                        if (angular.isNumber(viewValue)) {
+                            // presumably timestamp to date object
+                            viewValue = new Date(viewValue);
+                        }
+
+                        if (!viewValue) {
+                            return null;
+                        } else if (angular.isDate(viewValue) && !isNaN(viewValue)) {
+                            return viewValue;
+                        } else if (angular.isString(viewValue)) {
+                            var date = uibDateParser.parse(viewValue, dateFormat, scope.date);
+                            if (isNaN(date)) {
+                                return null;
+                            } else {
+                                return date;
+                            }
+                        } else {
+                            return null;
+                        }
+                    }
+
+                    function validator(modelValue, viewValue) {
+                        var value = modelValue || viewValue;
+
+                        if (!(attrs.ngRequired || attrs.required) && !value) {
+                            return true;
+                        }
+
+                        if (angular.isNumber(value)) {
+                            value = new Date(value);
+                        }
+                        if (!value) {
+                            return true;
+                        } else if (angular.isDate(value) && !isNaN(value)) {
+                            return true;
+                        } else if (angular.isDate(new Date(value)) && !isNaN(new Date(value).valueOf())) {
+                            return true;
+                        } else if (angular.isString(value)) {
+                            var date = uibDateParser.parse(value, dateFormat);
+                            return !isNaN(date);
+                        } else {
+                            return false;
+                        }
+                    }
                 }
             };
         }])
