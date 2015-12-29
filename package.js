@@ -1,6 +1,6 @@
 Package.describe({
   name: 'hexencoded:bootstrap-ui-datetime-picker',
-  version: '0.1.1',
+  version: '2.0.4',
   // Brief, one-line summary of the package.
   summary: 'AngularJs directive to use a date and/or time picker as a dropdown from an input',
   // URL to the Git repository containing the source code for this package.
