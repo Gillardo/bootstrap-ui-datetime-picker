@@ -16,7 +16,9 @@ app.controller('MyController', ['$scope', function($scope) {
         date6: new Date(),
         date7: new Date(),
         date8: new Date(),
-        date9: null
+        date9: null,
+        date10: new Date('2015-03-01T09:00:00Z'),
+        date11: new Date('2015-03-01T10:00:00Z')
     };
 
     this.open = {
@@ -28,10 +30,12 @@ app.controller('MyController', ['$scope', function($scope) {
         date6: false,
         date7: false,
         date8: false,
-        date9: false
+        date9: false,
+        date10: false,
+        date11: false
     };
 
-    // Disable weekend selection
+    // Disable today selection
     this.disabled = function(date, mode) {
         return (mode === 'day' && (new Date().toDateString() == date.toDateString()));
     };
