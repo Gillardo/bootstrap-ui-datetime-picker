@@ -120,26 +120,6 @@
                         attrs['datepickerMode'] = 'day';
                     }
 
-                    angular.forEach(['minMode', 'maxMode', 'minDate', 'maxDate', 'datepickerMode', 'initDate', 'shortcutPropagation'], function(key) {
-                        if (attrs[key]) {
-                            var getAttribute = $parse(attrs[key]);
-                            scope.$parent.$watch(getAttribute, function(value) {
-                                scope.dpData[key] = value;
-                            });
-                            datepickerEl.attr(cameltoDash(key), 'dpData.' + key);
-
-                            // Propagate changes from datepicker to outside
-                            if (key === 'datepickerMode') {
-                                var setAttribute = getAttribute.assign;
-                                scope.$watch('dpData.' + key, function(value, oldvalue) {
-                                    if (angular.isFunction(setAttribute) && value !== oldvalue) {
-                                        setAttribute(scope.$parent, value);
-                                    }
-                                });
-                            }
-                        }
-                    });
-
                     if (attrs.dateDisabled) {
                         datepickerEl.attr('date-disabled', 'dateDisabled({ date: date, mode: mode })');
                     }
@@ -155,6 +135,35 @@
                             timepickerEl.attr(cameltoDash(option), 'tpData.' + option);
                         });
                     }
+
+                    // watch attrs - NOTE: minDate and maxDate are used with datePicker and timePicker.  By using the minDate and maxDate
+                    // with the timePicker, you can dynamically set the min and max time values.  This cannot be done using the min and max values
+                    // with the timePickerOptions
+                    angular.forEach(['minMode', 'maxMode', 'minDate', 'maxDate', 'datepickerMode', 'initDate', 'shortcutPropagation'], function(key) {
+                        if (attrs[key]) {
+                            var getAttribute = $parse(attrs[key]);
+
+                            scope.$parent.$watch(getAttribute, function(value) {
+                                scope.dpData[key] = value;
+                            });
+                            datepickerEl.attr(cameltoDash(key), 'dpData.' + key);
+
+                            if (key == 'minDate') {
+                                timepickerEl.attr('min', 'dpData.minDate');
+                            } else if (key == 'maxDate')
+                                timepickerEl.attr('max', 'dpData.maxDate');
+
+                            // Propagate changes from datepicker to outside
+                            if (key === 'datepickerMode') {
+                                var setAttribute = getAttribute.assign;
+                                scope.$watch('dpData.' + key, function(value, oldvalue) {
+                                    if (angular.isFunction(setAttribute) && value !== oldvalue) {
+                                        setAttribute(scope.$parent, value);
+                                    }
+                                });
+                            }
+                        }
+                    });
 
                     // do not check showWeeks attr, as should be used via datePickerOptions
 
