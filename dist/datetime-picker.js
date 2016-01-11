@@ -177,7 +177,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         ngModel.$parsers.unshift(parseDate);
                         ngModel.$formatters.push(function(value) {
                             scope.date = value;
-                            return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat);
+                            return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat, scope.tpData.timezone);
                         });
                     } else {
                         ngModel.$formatters.push(function(value) {
@@ -250,7 +250,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             scope.date = dt;
                         }
 
-                        var date = scope.date ? dateFilter(scope.date, dateFormat) : null;
+                        var date = scope.date ? dateFilter(scope.date, dateFormat, scope.tpData.timezone) : null;
 
                         element.val(date);
                         ngModel.$setViewValue(date);
