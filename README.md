@@ -85,7 +85,8 @@ Now datetimePicker options are globally set by default.  If you do not state the
     closeOnDateSelection: true,
     appendToBody: false,
     showButtonBar: true,
-    defaultTime: '00:00 PM'
+    defaultTime: '00:00:00',
+    ngModelOptions: {}
 })
 ```
 
@@ -152,4 +153,4 @@ app.controller('MyController', function() {
 ```
 
 ## Support
-This was developed using angular-ui bootstrap Version: 0.13.2 - 2015-08-02.  If you have a bug, please check what version of angular-ui you are using.  If you are using a version prior to this, then please upgrade if you can and try it. If the problem persists, please let me know.  I do have a day job but will try to get back to you asap.  If you can fix the bug, then let me know how, or even better, submit a pull request.
+This was developed using angular-ui bootstrap Version: 1.1.0 - 2016-01-18.  If you have a bug, please check what version of angular-ui you are using.  If you are using a version prior to this, then please upgrade if you can and try it. If the problem persists, please let me know.  I do have a day job but will try to get back to you asap.  If you can fix the bug, then let me know how, or even better, submit a pull request.
