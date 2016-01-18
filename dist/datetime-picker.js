@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.0.6
-// Released: 2016-01-17 
+// Version: 2.0.7
+// Released: 2016-01-18 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -27,7 +27,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
     .controller('DateTimePickerController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function (scope, element, attrs, $compile, $parse, $document, $timeout, $uibPosition, dateFilter, uibDateParser, uiDatetimePickerConfig, $rootScope) {
             var dateFormat = uiDatetimePickerConfig.dateFormat,
-                ngModel, timezone, $popup, cache = {},
+                ngModel, timezone, $popup, cache = {}, watchListeners = [],
                 closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
                 appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
                 altInputFormats = angular.isDefined(attrs.altInputFormats) ? scope.$parent.$eval(attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats;
@@ -129,23 +129,21 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 angular.forEach(['minMode', 'maxMode', 'datepickerMode', 'shortcutPropagation'], function(key) {
                     if (attrs[key]) {
                         var getAttribute = $parse(attrs[key]);
-                        var propConfig = {
-                            get: function() {
-                                return getAttribute(scope.$parent);
-                            }
-                        };
 
+                        watchListeners.push(scope.$parent.$watch(getAttribute, function(value) {
+                            scope.watchData[key] = value;
+                        }));
                         datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
 
                         // Propagate changes from datepicker to outside
                         if (key === 'datepickerMode') {
                             var setAttribute = getAttribute.assign;
-                            propConfig.set = function(v) {
-                                setAttribute(scope.$parent, v);
-                            };
+                            watchListeners.push(scope.$watch('watchData.' + key, function(value, oldvalue) {
+                                if (angular.isFunction(setAttribute) && value !== oldvalue) {
+                                    setAttribute(scope.$parent, value);
+                                }
+                            }));
                         }
-
-                        Object.defineProperty(scope.watchData, key, propConfig);
                     }
                 });
 
@@ -168,25 +166,15 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     if (attrs[key]) {
                         var getAttribute = $parse(attrs[key]);
 
-                        scope.$parent.$watch(getAttribute, function(value) {
+                        watchListeners.push(scope.$parent.$watch(getAttribute, function(value) {
                             scope.watchData[key] = value;
-                        });
+                        }));
                         datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
 
                         if (key == 'minDate') {
                             timepickerEl.attr('min', 'watchData.minDate');
                         } else if (key == 'maxDate')
                             timepickerEl.attr('max', 'watchData.maxDate');
-
-                        // Propagate changes from datepicker to outside
-                        if (key === 'datepickerMode') {
-                            var setAttribute = getAttribute.assign;
-                            scope.$watch('watchData.' + key, function(value, oldvalue) {
-                                if (angular.isFunction(setAttribute) && value !== oldvalue) {
-                                    setAttribute(scope.$parent, value);
-                                }
-                            });
-                        }
                     }
                 });
 
@@ -389,6 +377,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
                 }
 
+                watchListeners.forEach(function(a) { a(); });
                 $popup.remove();
                 element.unbind('keydown', inputKeydownBind);
                 $document.unbind('click', documentClickBind);
