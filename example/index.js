@@ -18,7 +18,9 @@ app.controller('MyController', ['$scope', function($scope) {
         date8: new Date(),
         date9: null,
         date10: new Date('2015-03-01T09:00:00Z'),
-        date11: new Date('2015-03-01T10:00:00Z')
+        date11: new Date('2015-03-01T10:00:00Z'),
+        date12: new Date('2015-03-01T10:00:00Z'),
+        date13: null,
     };
 
     this.open = {
@@ -32,7 +34,9 @@ app.controller('MyController', ['$scope', function($scope) {
         date8: false,
         date9: false,
         date10: false,
-        date11: false
+        date11: false,
+        date12: false,
+        date13: false
     };
 
     // Disable today selection
@@ -53,6 +57,38 @@ app.controller('MyController', ['$scope', function($scope) {
     this.dateModeOptions = {
         minMode: 'year',
         maxMode: 'year'
+    };
+
+    this.buttonBar = {
+        show: true,
+        now: {
+            show: true,
+            text: 'Now!'
+        },
+        today: {
+            show: true,
+            text: 'Today!'
+        },
+        clear: {
+            show: false,
+            text: 'Wipe'
+        },
+        date: {
+            show: true,
+            text: 'Date'
+        },
+        time: {
+            show: true,
+            text: 'Time'
+        },
+        close: {
+            show: true,
+            text: 'Shut'
+        }
+    };
+
+    this.onClosed = function(args) {
+        that.closedArgs = args;
     };
 
     this.openCalendar = function(e, date) {

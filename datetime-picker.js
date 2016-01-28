@@ -9,15 +9,35 @@
         },
         enableDate: true,
         enableTime: true,
-        todayText: 'Today',
-        nowText: 'Now',
-        clearText: 'Clear',
-        closeText: 'Done',
-        dateText: 'Date',
-        timeText: 'Time',
+        buttonBar: {
+            show: true,
+            now: {
+                show: true,
+                text: 'Now'
+            },
+            today: {
+                show: true,
+                text: 'Today'
+            },
+            clear: {
+                show: true,
+                text: 'Clear'
+            },
+            date: {
+                show: true,
+                text: 'Date'
+            },
+            time: {
+                show: true,
+                text: 'Time'
+            },
+            close: {
+                show: true,
+                text: 'Close'
+            }
+        },
         closeOnDateSelection: true,
         appendToBody: false,
-        showButtonBar: true,
         altInputFormats: [],
         ngModelOptions: { }
     })
@@ -34,7 +54,7 @@
                 ngModelOptions = ngModel.$options || uiDatetimePickerConfig.ngModelOptions;
 
                 scope.watchData = {};
-                scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : uiDatetimePickerConfig.showButtonBar;
+                scope.buttonBar = angular.isDefined(attrs.buttonBar) ? scope.$parent.$eval(attrs.buttonBar) : uiDatetimePickerConfig.buttonBar;
 
                 // determine which pickers should be available. Defaults to date and time
                 scope.enableDate = angular.isDefined(scope.enableDate) ? scope.enableDate : uiDatetimePickerConfig.enableDate;
@@ -225,7 +245,15 @@
 
             // get text
             scope.getText = function (key) {
-                return scope[key + 'Text'] || uiDatetimePickerConfig[key + 'Text'];
+                return scope.buttonBar[key].text || uiDatetimePickerConfig.buttonBar[key].text;
+            };
+
+            // determine if button is to be shown or not
+            scope.doShow = function(key) {
+                if (angular.isDefined(scope.buttonBar[key].show))
+                    return scope.buttonBar[key].show;
+                else
+                    return uiDatetimePickerConfig.buttonBar[key].show;
             };
 
             // Inner change
@@ -285,7 +313,7 @@
                                 scope.showPicker = 'time';
                             }, 0);
                         } else {
-                            scope.close();
+                            scope.close(false);
                         }
                     }
                 }
@@ -294,7 +322,7 @@
 
             scope.keydown = function(evt) {
                 if (evt.which === 27) {
-                    scope.close();
+                    scope.close(false);
                     element[0].focus();
                 }
             };
@@ -305,6 +333,8 @@
                 };
 
                 if (value) {
+                    cache['openDate'] = scope.date;
+
                     var position = appendToBody ? $uibPosition.offset(element) : $uibPosition.position(element);
 
                     if (appendToBody) {
@@ -359,12 +389,17 @@
                     scope.close();
             };
 
-            scope.close = function () {
+            scope.close = function (closePressed) {
                 scope.isOpen = false;
 
                 // if enableDate and enableTime are true, reopen the picker in date mode first
                 if (scope.enableDate && scope.enableTime)
                     scope.showPicker = 'date';
+
+                // if a on-close-fn has been defined, lets call it
+                // we only call this if closePressed is defined!
+                if (angular.isDefined(closePressed))
+                    scope.whenClosed({ args: {closePressed: closePressed, openDate: cache['openDate'] || null, closeDate: scope.date } });
 
                 element[0].focus();
             };
@@ -401,7 +436,7 @@
 
                 if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
                     scope.$apply(function() {
-                        scope.isOpen = false;
+                        scope.close(false);
                     });
                 }
             }
@@ -411,7 +446,7 @@
                     evt.preventDefault();
                     evt.stopPropagation();
                     scope.$apply(function() {
-                        scope.close();
+                        scope.close(false);
                     });
                     element[0].focus();
                 } else if (evt.which === 40 && !scope.isOpen) {
@@ -496,14 +531,9 @@
                 isOpen: '=?',
                 enableDate: '=?',
                 enableTime: '=?',
-                todayText: '@',
-                nowText: '@',
-                dateText: '@',
-                timeText: '@',
-                clearText: '@',
-                closeText: '@',
                 dateDisabled: '&',
-                customClass: '&'
+                customClass: '&',
+                whenClosed: '&'
             },
             link: function (scope, element, attrs, ctrls) {
                 var ngModel = ctrls[0],

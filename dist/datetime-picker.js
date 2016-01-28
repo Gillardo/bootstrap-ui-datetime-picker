@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.1.0
-// Released: 2016-01-18 
+// Version: 2.2.0
+// Released: 2016-01-28 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -12,15 +12,35 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         },
         enableDate: true,
         enableTime: true,
-        todayText: 'Today',
-        nowText: 'Now',
-        clearText: 'Clear',
-        closeText: 'Done',
-        dateText: 'Date',
-        timeText: 'Time',
+        buttonBar: {
+            show: true,
+            now: {
+                show: true,
+                text: 'Now'
+            },
+            today: {
+                show: true,
+                text: 'Today'
+            },
+            clear: {
+                show: true,
+                text: 'Clear'
+            },
+            date: {
+                show: true,
+                text: 'Date'
+            },
+            time: {
+                show: true,
+                text: 'Time'
+            },
+            close: {
+                show: true,
+                text: 'Close'
+            }
+        },
         closeOnDateSelection: true,
         appendToBody: false,
-        showButtonBar: true,
         altInputFormats: [],
         ngModelOptions: { }
     })
@@ -37,7 +57,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 ngModelOptions = ngModel.$options || uiDatetimePickerConfig.ngModelOptions;
 
                 scope.watchData = {};
-                scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : uiDatetimePickerConfig.showButtonBar;
+                scope.buttonBar = angular.isDefined(attrs.buttonBar) ? scope.$parent.$eval(attrs.buttonBar) : uiDatetimePickerConfig.buttonBar;
 
                 // determine which pickers should be available. Defaults to date and time
                 scope.enableDate = angular.isDefined(scope.enableDate) ? scope.enableDate : uiDatetimePickerConfig.enableDate;
@@ -228,7 +248,15 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             // get text
             scope.getText = function (key) {
-                return scope[key + 'Text'] || uiDatetimePickerConfig[key + 'Text'];
+                return scope.buttonBar[key].text || uiDatetimePickerConfig.buttonBar[key].text;
+            };
+
+            // determine if button is to be shown or not
+            scope.doShow = function(key) {
+                if (angular.isDefined(scope.buttonBar[key].show))
+                    return scope.buttonBar[key].show;
+                else
+                    return uiDatetimePickerConfig.buttonBar[key].show;
             };
 
             // Inner change
@@ -288,7 +316,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                                 scope.showPicker = 'time';
                             }, 0);
                         } else {
-                            scope.close();
+                            scope.close(false);
                         }
                     }
                 }
@@ -297,7 +325,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             scope.keydown = function(evt) {
                 if (evt.which === 27) {
-                    scope.close();
+                    scope.close(false);
                     element[0].focus();
                 }
             };
@@ -308,6 +336,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 };
 
                 if (value) {
+                    cache['openDate'] = scope.date;
+
                     var position = appendToBody ? $uibPosition.offset(element) : $uibPosition.position(element);
 
                     if (appendToBody) {
@@ -362,12 +392,17 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.close();
             };
 
-            scope.close = function () {
+            scope.close = function (closePressed) {
                 scope.isOpen = false;
 
                 // if enableDate and enableTime are true, reopen the picker in date mode first
                 if (scope.enableDate && scope.enableTime)
                     scope.showPicker = 'date';
+
+                // if a on-close-fn has been defined, lets call it
+                // we only call this if closePressed is defined!
+                if (angular.isDefined(closePressed))
+                    scope.whenClosed({ args: {closePressed: closePressed, openDate: cache['openDate'] || null, closeDate: scope.date } });
 
                 element[0].focus();
             };
@@ -404,7 +439,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                 if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
                     scope.$apply(function() {
-                        scope.isOpen = false;
+                        scope.close(false);
                     });
                 }
             }
@@ -414,7 +449,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     evt.preventDefault();
                     evt.stopPropagation();
                     scope.$apply(function() {
-                        scope.close();
+                        scope.close(false);
                     });
                     element[0].focus();
                 } else if (evt.which === 40 && !scope.isOpen) {
@@ -499,14 +534,9 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 isOpen: '=?',
                 enableDate: '=?',
                 enableTime: '=?',
-                todayText: '@',
-                nowText: '@',
-                dateText: '@',
-                timeText: '@',
-                clearText: '@',
-                closeText: '@',
                 dateDisabled: '&',
-                customClass: '&'
+                customClass: '&',
+                whenClosed: '&'
             },
             link: function (scope, element, attrs, ctrls) {
                 var ngModel = ctrls[0],
@@ -537,12 +567,12 @@ angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($t
   'use strict';
 
   $templateCache.put('template/date-picker.html',
-    "<ul ng-if=\"isOpen && showPicker == 'date'\" class=\"dropdown-menu dropdown-menu-left datetime-picker-dropdown\" ng-style=dropdownStyle style=left:inherit ng-keydown=keydown($event) ng-click=$event.stopPropagation()><li style=\"padding:0 5px 5px 5px\" class=date-picker-menu><div ng-transclude></div></li><li ng-if=showButtonBar style=padding:5px><span class=\"btn-group pull-left\" style=margin-right:10px><button type=button class=\"btn btn-sm btn-info\" ng-click=\"select('today')\" ng-disabled=\"isDisabled('today')\">{{ getText('today') }}</button> <button type=button class=\"btn btn-sm btn-danger\" ng-click=\"select('clear')\">{{ getText('clear') }}</button></span> <span class=\"btn-group pull-right\"><button ng-if=enableTime type=button class=\"btn btn-sm btn-default\" ng-click=\"changePicker($event, 'time')\">{{ getText('time')}}</button> <button type=button class=\"btn btn-sm btn-success\" ng-click=close()>{{ getText('close') }}</button></span></li></ul>"
+    "<ul class=\"dropdown-menu dropdown-menu-left datetime-picker-dropdown\" ng-if=\"isOpen && showPicker == 'date'\" ng-style=dropdownStyle style=left:inherit ng-keydown=keydown($event) ng-click=$event.stopPropagation()><li style=\"padding:0 5px 5px 5px\" class=date-picker-menu><div ng-transclude></div></li><li style=padding:5px ng-if=buttonBar.show><span class=\"btn-group pull-left\" style=margin-right:10px ng-if=\"doShow('today') || doShow('clear')\"><button type=button class=\"btn btn-sm btn-info\" ng-if=\"doShow('today')\" ng-click=\"select('today')\" ng-disabled=\"isDisabled('today')\">{{ getText('today') }}</button> <button type=button class=\"btn btn-sm btn-danger\" ng-if=\"doShow('clear')\" ng-click=\"select('clear')\">{{ getText('clear') }}</button></span> <span class=\"btn-group pull-right\" ng-if=\"(doShow('time') && enableTime) || doShow('close')\"><button type=button class=\"btn btn-sm btn-default\" ng-if=\"doShow('time') && enableTime\" ng-click=\"changePicker($event, 'time')\">{{ getText('time')}}</button> <button type=button class=\"btn btn-sm btn-success\" ng-if=\"doShow('close')\" ng-click=close(true)>{{ getText('close') }}</button></span></li></ul>"
   );
 
 
   $templateCache.put('template/time-picker.html',
-    "<ul ng-if=\"isOpen && showPicker == 'time'\" class=\"dropdown-menu dropdown-menu-left datetime-picker-dropdown\" ng-style=dropdownStyle style=left:inherit ng-keydown=keydown($event) ng-click=$event.stopPropagation()><li style=\"padding:0 5px 5px 5px\" class=time-picker-menu><div ng-transclude></div></li><li ng-if=showButtonBar style=padding:5px><span class=\"btn-group pull-left\" style=margin-right:10px><button type=button class=\"btn btn-sm btn-info\" ng-click=\"select('now')\" ng-disabled=\"isDisabled('now')\">{{ getText('now') }}</button> <button type=button class=\"btn btn-sm btn-danger\" ng-click=\"select('clear')\">{{ getText('clear') }}</button></span> <span class=\"btn-group pull-right\"><button ng-if=enableDate type=button class=\"btn btn-sm btn-default\" ng-click=\"changePicker($event, 'date')\">{{ getText('date')}}</button> <button type=button class=\"btn btn-sm btn-success\" ng-click=close()>{{ getText('close') }}</button></span></li></ul>"
+    "<ul class=\"dropdown-menu dropdown-menu-left datetime-picker-dropdown\" ng-if=\"isOpen && showPicker == 'time'\" ng-style=dropdownStyle style=left:inherit ng-keydown=keydown($event) ng-click=$event.stopPropagation()><li style=\"padding:0 5px 5px 5px\" class=time-picker-menu><div ng-transclude></div></li><li style=padding:5px ng-if=buttonBar.show><span class=\"btn-group pull-left\" style=margin-right:10px ng-if=\"doShow('now') || doShow('clear')\"><button type=button class=\"btn btn-sm btn-info\" ng-if=\"doShow('now')\" ng-click=\"select('now')\" ng-disabled=\"isDisabled('now')\">{{ getText('now') }}</button> <button type=button class=\"btn btn-sm btn-danger\" ng-if=\"doShow('clear')\" ng-click=\"select('clear')\">{{ getText('clear') }}</button></span> <span class=\"btn-group pull-right\" ng-if=\"(doShow('date') && enableDate) || doShow('close')\"><button type=button class=\"btn btn-sm btn-default\" ng-if=\"doShow('date') && enableDate\" ng-click=\"changePicker($event, 'date')\">{{ getText('date')}}</button> <button type=button class=\"btn btn-sm btn-success\" ng-if=\"doShow('close')\" ng-click=close(true)>{{ getText('close') }}</button></span></li></ul>"
   );
 
 }]);

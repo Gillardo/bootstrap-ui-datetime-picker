@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.0/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.0/ui-bootstrap-tpls.js"></script>
     <script src="datetime-picker.js"></script>
     <script src="script.js"></script>
 </head>
@@ -27,9 +27,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="ctrl.dates.date1" is-open="ctrl.open.date1" enable-time="false" datepicker-options="ctrl.dateOptions" date-disabled="ctrl.disabled(date, mode)" close-on-date-selection="false" datepicker-append-to-body="true" clear-text="Remove" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date1')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date1')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -51,9 +51,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="ctrl.dates.date2" is-open="ctrl.open.date2" enable-date="false" timepicker-options="ctrl.timeOptions" close-on-selection="true" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date2')"><i class="fa fa-clock-o"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date2')"><i class="fa fa-clock-o"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -72,9 +72,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="MM/dd/yyyy HH:mm" ng-model="ctrl.dates.date3" is-open="ctrl.open.date3" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date3')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date3')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -94,9 +94,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="ctrl.dates.date4" is-open="ctrl.open.date4" enable-time="false" max-date="ctrl.dates.date5" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date4')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date4')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -105,9 +105,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="ctrl.dates.date5" is-open="ctrl.open.date5" enable-time="false" min-date="ctrl.dates.date4" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date5')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date5')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -126,9 +126,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker ng-model="ctrl.dates.date6" is-open="ctrl.open.date6" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date6')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date6')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -147,9 +147,9 @@
             <div class="col-sm-10">
                 <p class="input-group dropup">
                     <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="ctrl.dates.date7" is-open="ctrl.open.date7" enable-time="false" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date7')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date7')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -169,9 +169,9 @@
             <div class="col-sm-10">
                 <p class="input-group dropup">
                     <input type="text" class="form-control" datepicker-mode="'year'" datetime-picker="yyyy" ng-model="ctrl.dates.date8" is-open="ctrl.open.date8" enable-time="false" datepicker-options="ctrl.dateModeOptions" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date8')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date8')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -191,9 +191,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker ng-model="ctrl.dates.date9" default-time="17:00" is-open="ctrl.open.date9" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date9')"><i class="fa fa-calendar"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date9')"><i class="fa fa-calendar"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -212,9 +212,9 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="ctrl.dates.date10" max-date="ctrl.dates.date11" is-open="ctrl.open.date10" enable-date="false" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date10')"><i class="fa fa-clock-o"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date10')"><i class="fa fa-clock-o"></i></button>
+              </span>
                 </p>
             </div>
         </div>
@@ -223,15 +223,49 @@
             <div class="col-sm-10">
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="ctrl.dates.date11" min-date="ctrl.dates.date10" is-open="ctrl.open.date11" enable-date="false" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date11')"><i class="fa fa-clock-o"></i></button>
-                </span>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date11')"><i class="fa fa-clock-o"></i></button>
+              </span>
                 </p>
             </div>
         </div>
     </form>
     <hr />
-
+    <h3>Customize Button bar</h3>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-10">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="ctrl.dates.date12" is-open="ctrl.open.date12" enable-time="false" button-bar="ctrl.buttonBar" />
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date12')"><i class="fa fa-calendar"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+    </form>
+    <hr />
+    <h3>Call function when closed</h3>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-10">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date13" is-open="ctrl.open.date13" when-closed="ctrl.onClosed(args)" />
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date13')"><i class="fa fa-calendar"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">On Close</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">{{ ctrl.closedArgs }}</p>
+            </div>
+        </div>
+    </form>
 </div>
 </body>
 

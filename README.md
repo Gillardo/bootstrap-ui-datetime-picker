@@ -28,12 +28,7 @@ You have the following properties available to use with the directive.  All are 
 * closeOnDateSelection (true/false)
 * enableDate (true/false)
 * enableTime (true/false)
-* todayText  (string)
-* nowText (string)
-* dateText (string)
-* timeText (string)
-* clearText (string)
-* closeText (string)
+* buttonBar (object)
 * dateDisabled
 * datepickerOptions (object)
 * timepickerOptions (object)
@@ -47,18 +42,9 @@ Close popup once a date has been chosen. TimePicker will stay open until user cl
 Whether you would like the user to be able to select a date. Defaults to true
 ##### enableTime
 Whether you would like the user to be able to select a time. Defaults to true
-##### todayText
-The text for the button that allows the user to select today when the date picker is visible
-##### nowText
-The text for the button that allows the user to select the current time when the time picker is visible.  If the date is already populated this will only change the time of the existing date.
-##### dateText
-The text for the button that allows the user to change to the date picker while the time picker is visible.
-##### timeText
-The text for the button that allows the user to change to the time picker while the date picker is visible.
-##### clearText
-The text for the button that allows the user to clear the currently selected date / time
-##### closeText
-The text for the button that closes the date / time popup/dropdown
+##### buttonBar
+To show or hide the button bar, or any of the buttons inside it. Defaults to the uiDatetimePickerConfig.
+Only specify the elements that you want to override, as each button defaults to the uiDatetimePickerConfig setup, if it is not configured on scope of the datetimePicker
 ##### dateDisabled
 From angularUI site -> An optional expression to disable visible options based on passing date and current mode (day|month|year).
 ##### datepickerOptions
@@ -67,27 +53,57 @@ Object to configure settings for the datepicker (can be found on angularUI site)
 Object to configure settings for the timepicker (can be found on angularUI site)
 ##### defaultTime
 Initial time when a new date is selected (e.g. "14:00:00" or "2:00 pm")
+##### customClass
+From angularUI site -> An optional expression to add classes based on passing a date and current mode
+##### whenClosed
+An callback function to call when the picker dropdown is closed. See demo for more details.
 
 ## uiDatetimePickerConfig
 Now datetimePicker options are globally set by default.  If you do not state the values within the declaration, the config options are used instead.  Here are the default options
 
 ```
 .constant('uiDatetimePickerConfig', {
-    dateFormat: 'yyyy-MM-dd HH:mm',
-    enableDate: true,
-    enableTime: true,
-    todayText: 'Today',
-    nowText: 'Now',
-    clearText: 'Clear',
-    closeText: 'Done',
-    dateText: 'Date',
-    timeText: 'Time',
-    closeOnDateSelection: true,
-    appendToBody: false,
-    showButtonBar: true,
-    defaultTime: '00:00:00',
-    ngModelOptions: {}
-})
+        dateFormat: 'yyyy-MM-dd HH:mm',
+        defaultTime: '00:00:00',
+        html5Types: {
+            date: 'yyyy-MM-dd',
+            'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
+            'month': 'yyyy-MM'
+        },
+        enableDate: true,
+        enableTime: true,
+        buttonBar: {
+            show: true,
+            now: {
+                show: true,
+                text: 'Now'
+            },
+            today: {
+                show: true,
+                text: 'Today'
+            },
+            clear: {
+                show: true,
+                text: 'Clear'
+            },
+            date: {
+                show: true,
+                text: 'Date'
+            },
+            time: {
+                show: true,
+                text: 'Time'
+            },
+            close: {
+                show: true,
+                text: 'Close'
+            }
+        },
+        closeOnDateSelection: true,
+        appendToBody: false,
+        altInputFormats: [],
+        ngModelOptions: { }
+    })
 ```
 
 ## Css
