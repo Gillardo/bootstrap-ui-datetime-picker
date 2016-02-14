@@ -76,6 +76,8 @@ Now datetimePicker options are globally set by default.  If you do not state the
             'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
             'month': 'yyyy-MM'
         },
+        initialPicker: 'date',
+        reOpenDefault: false,
         enableDate: true,
         enableTime: true,
         buttonBar: {
