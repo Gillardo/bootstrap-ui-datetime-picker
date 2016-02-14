@@ -29,6 +29,8 @@ You have the following properties available to use with the directive.  All are 
 * enableDate (true/false)
 * enableTime (true/false)
 * buttonBar (object)
+* initialPicker ('date'/'time')
+* reOpenDefault (false/'date'/'time') - NOTE: `true` not supported
 * dateDisabled
 * datepickerOptions (object)
 * timepickerOptions (object)
@@ -45,6 +47,10 @@ Whether you would like the user to be able to select a time. Defaults to true
 ##### buttonBar
 To show or hide the button bar, or any of the buttons inside it. Defaults to the uiDatetimePickerConfig.
 Only specify the elements that you want to override, as each button defaults to the uiDatetimePickerConfig setup, if it is not configured on scope of the datetimePicker
+##### initialPicker
+The initial picker to open when the control is first pressed
+##### reOpenDefault
+The picker to set as the picker to open once the control has already been opened at least once. Setting to `false` will default to the date picker if both date and time are enabled, or just the enabled control if only time or date is in use.
 ##### dateDisabled
 From angularUI site -> An optional expression to disable visible options based on passing date and current mode (day|month|year).
 ##### datepickerOptions
