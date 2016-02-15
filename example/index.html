@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.0/ui-bootstrap-tpls.js"></script>
     <script src="datetime-picker.js"></script>
-    <script src="script.js"></script>
+    <script src="index.js"></script>
 </head>
 <body style="padding:10px;" class="container-fluid">
 <h1>DateTime Picker Demo</h1>
@@ -263,6 +263,78 @@
             <label class="col-sm-2 control-label">On Close</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{ ctrl.closedArgs }}</p>
+            </div>
+        </div>
+    </form>
+    <h3>Initial picker</h3>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-10">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date14" is-open="ctrl.open.date14" initial-picker="date"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date14')"><i class="fa fa-clock-o"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Time</label>
+            <div class="col-sm-10">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date16" is-open="ctrl.open.date16" initial-picker="time"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date16')"><i class="fa fa-clock-o"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+    </form>
+    <h3>Initial picker with re-open default</h3>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Date on initial, date there after</label>
+            <div class="col-sm-6">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date17" is-open="ctrl.open.date17" initial-picker="date" re-open-default="date"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date17')"><i class="fa fa-clock-o"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Date on initial, time there after</label>
+            <div class="col-sm-6">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date18" is-open="ctrl.open.date18" initial-picker="date" re-open-default="time"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date18')"><i class="fa fa-clock-o"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Time on initial, time there after</label>
+            <div class="col-sm-6">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date19" is-open="ctrl.open.date19" initial-picker="time" re-open-default="time"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date19')"><i class="fa fa-clock-o"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Time on initial, date there after</label>
+            <div class="col-sm-6">
+                <p class="input-group">
+                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="ctrl.dates.date15" is-open="ctrl.open.date15" initial-picker="time" re-open-default="date"/>
+              <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openCalendar($event, 'date15')"><i class="fa fa-clock-o"></i></button>
+              </span>
+                </p>
             </div>
         </div>
     </form>
