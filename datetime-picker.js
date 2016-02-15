@@ -66,7 +66,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 scope.enableTime = angular.isDefined(scope.enableTime) ? scope.enableTime : uiDatetimePickerConfig.enableTime;
 
                 // determine default picker
-                scope.initialPicker = angular.isDefined(attrs.initialPicker) ? attrs.initialPicker : uiDatetimePickerConfig.initialPicker;
+                scope.initialPicker = angular.isDefined(attrs.initialPicker) ? attrs.initialPicker : (scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time');
 
                 // determine the picker to open when control is re-opened
                 scope.reOpenDefault = angular.isDefined(attrs.reOpenDefault) ? attrs.reOpenDefault : uiDatetimePickerConfig.reOpenDefault;
