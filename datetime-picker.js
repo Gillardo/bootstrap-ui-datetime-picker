@@ -114,17 +114,22 @@
                 }
 
                 if (attrs.datepickerOptions) {
-                    var options = scope.$parent.$eval(attrs.datepickerOptions);
+                    scope.$parent.$watch(function () {
+                        return scope.$parent.$eval(attrs.datepickerOptions);
+                    }, function (newValue, oldValue) {
+                        if (newValue && newValue != oldValue) {
+                            var options = newValue;
+                            if (options && options.initDate) {
+                                scope.initDate = dateParser.fromTimezone(options.initDate, ngModelOptions.timezone);
+                                datepickerEl.attr('init-date', 'initDate');
+                                delete options.initDate;
+                            }
 
-                    if (options && options.initDate) {
-                        scope.initDate = dateParser.fromTimezone(options.initDate, ngModelOptions.timezone);
-                        datepickerEl.attr('init-date', 'initDate');
-                        delete options.initDate;
-                    }
-
-                    angular.forEach(options, function (value, option) {
-                        datepickerEl.attr(cameltoDash(option), value);
-                    });
+                            angular.forEach(options, function (value, option) {
+                                datepickerEl.attr(cameltoDash(option), value);
+                            });
+                        }
+                    }, true);
                 }
 
                 // set datepickerMode to day by default as need to create watch
