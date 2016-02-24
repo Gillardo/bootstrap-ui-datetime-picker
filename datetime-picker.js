@@ -1,4 +1,4 @@
-﻿angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
+angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
         defaultTime: '00:00:00',
@@ -7,6 +7,8 @@
             'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
             'month': 'yyyy-MM'
         },
+        initialPicker: 'date',
+        reOpenDefault: false,
         enableDate: true,
         enableTime: true,
         buttonBar: {
@@ -60,8 +62,19 @@
                 scope.enableDate = angular.isDefined(scope.enableDate) ? scope.enableDate : uiDatetimePickerConfig.enableDate;
                 scope.enableTime = angular.isDefined(scope.enableTime) ? scope.enableTime : uiDatetimePickerConfig.enableTime;
 
+                // determine default picker
+                scope.initialPicker = angular.isDefined(attrs.initialPicker) ? attrs.initialPicker : (scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time');
+
+                // determine the picker to open when control is re-opened
+                scope.reOpenDefault = angular.isDefined(attrs.reOpenDefault) ? attrs.reOpenDefault : uiDatetimePickerConfig.reOpenDefault;
+
+                // check if an illegal combination of options exists
+                if (scope.initialPicker == 'date' && !scope.enableDate) {
+                    throw new Error("datetimePicker can't have initialPicker set to date and have enableDate set to false.");
+                }
+
                 // default picker view
-                scope.showPicker = scope.enableDate ? 'date' : 'time';
+                scope.showPicker = !scope.enableDate ? 'time' : scope.initialPicker;
 
                 var isHtml5DateInput = false;
 
@@ -394,7 +407,7 @@
 
                 // if enableDate and enableTime are true, reopen the picker in date mode first
                 if (scope.enableDate && scope.enableTime)
-                    scope.showPicker = 'date';
+                    scope.showPicker = scope.reOpenDefault === false ? 'date' : scope.reOpenDefault;
 
                 // if a on-close-fn has been defined, lets call it
                 // we only call this if closePressed is defined!
@@ -531,6 +544,8 @@
                 isOpen: '=?',
                 enableDate: '=?',
                 enableTime: '=?',
+                initialPicker: '=?',
+                reOpenDefault: '=?',
                 dateDisabled: '&',
                 customClass: '&',
                 whenClosed: '&'

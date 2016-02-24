@@ -21,6 +21,12 @@ app.controller('MyController', ['$scope', function($scope) {
         date11: new Date('2015-03-01T10:00:00Z'),
         date12: new Date('2015-03-01T10:00:00Z'),
         date13: null,
+        date14: new Date('2016-02-16T10:00:00Z'),
+        date15: new Date('2016-02-16T10:00:00Z'),
+        date16: new Date('2016-02-16T10:00:00Z'),
+        date17: new Date('2016-02-16T10:00:00Z'),
+        date18: new Date('2016-02-16T10:00:00Z'),
+        date19: new Date('2016-02-16T10:00:00Z'),
     };
 
     this.open = {
@@ -36,7 +42,13 @@ app.controller('MyController', ['$scope', function($scope) {
         date10: false,
         date11: false,
         date12: false,
-        date13: false
+        date13: false,
+        date14: false,
+        date15: false,
+        date16: false,
+        date17: false,
+        date18: false,
+        date19: false
     };
 
     // Disable today selection
