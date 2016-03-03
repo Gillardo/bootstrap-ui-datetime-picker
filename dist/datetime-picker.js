@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.2.0
-// Released: 2016-01-28 
+// Version: 2.2.1
+// Released: 2016-03-03 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -120,7 +120,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     var options = scope.$parent.$eval(attrs.datepickerOptions);
 
                     if (options && options.initDate) {
-                        scope.initDate = dateParser.fromTimezone(options.initDate, ngModelOptions.timezone);
+                        scope.initDate = uibDateParser.fromTimezone(options.initDate, ngModelOptions.timezone);
                         datepickerEl.attr('init-date', 'initDate');
                         delete options.initDate;
                     }
@@ -214,7 +214,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             scope.date = value;
                             return value;
                         }
-                        scope.date = uibDateParser.fromTimezone(value, ngModelOptions.timezone);;
+                        scope.date = uibDateParser.fromTimezone(value, ngModelOptions.timezone);
                         dateFormat = dateFormat.replace(/M!/, 'MM')
                             .replace(/d!/, 'dd');
 
@@ -291,7 +291,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         var defaultTime = angular.isDefined(attrs.defaultTime) ? attrs.defaultTime : uiDatetimePickerConfig.defaultTime;
                         var t = new Date('2001-01-01 ' + defaultTime);
 
-                        if (!isNaN(t)) {
+                        if (!isNaN(t) && dt != null) {
                             dt.setHours(t.getHours());
                             dt.setMinutes(t.getMinutes());
                             dt.setSeconds(t.getSeconds());
