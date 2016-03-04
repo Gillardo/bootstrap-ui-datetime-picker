@@ -325,6 +325,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             $timeout(function() {
                                 scope.showPicker = 'time';
                             }, 0);
+
+                            // in order to update the timePicker, we need to update the model reference!
+                            // as found here https://angular-ui.github.io/bootstrap/#/timepicker
+                            $timeout(function() {
+                                scope.date = new Date(scope.date);
+                            }, 100);
                         } else {
                             scope.close(false);
                         }

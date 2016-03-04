@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.2.1
-// Released: 2016-03-03 
+// Version: 2.2.2
+// Released: 2016-03-04 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -10,6 +10,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
             'month': 'yyyy-MM'
         },
+        initialPicker: 'date',
+        reOpenDefault: false,
         enableDate: true,
         enableTime: true,
         buttonBar: {
@@ -63,8 +65,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 scope.enableDate = angular.isDefined(scope.enableDate) ? scope.enableDate : uiDatetimePickerConfig.enableDate;
                 scope.enableTime = angular.isDefined(scope.enableTime) ? scope.enableTime : uiDatetimePickerConfig.enableTime;
 
+                // determine default picker
+                scope.initialPicker = angular.isDefined(attrs.initialPicker) ? attrs.initialPicker : (scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time');
+
+                // determine the picker to open when control is re-opened
+                scope.reOpenDefault = angular.isDefined(attrs.reOpenDefault) ? attrs.reOpenDefault : uiDatetimePickerConfig.reOpenDefault;
+
+                // check if an illegal combination of options exists
+                if (scope.initialPicker == 'date' && !scope.enableDate) {
+                    throw new Error("datetimePicker can't have initialPicker set to date and have enableDate set to false.");
+                }
+
                 // default picker view
-                scope.showPicker = scope.enableDate ? 'date' : 'time';
+                scope.showPicker = !scope.enableDate ? 'time' : scope.initialPicker;
 
                 var isHtml5DateInput = false;
 
@@ -315,6 +328,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             $timeout(function() {
                                 scope.showPicker = 'time';
                             }, 0);
+
+                            // in order to update the timePicker, we need to update the model reference!
+                            // as found here https://angular-ui.github.io/bootstrap/#/timepicker
+                            $timeout(function() {
+                                scope.date = new Date(scope.date);
+                            }, 100);
                         } else {
                             scope.close(false);
                         }
@@ -397,7 +416,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                 // if enableDate and enableTime are true, reopen the picker in date mode first
                 if (scope.enableDate && scope.enableTime)
-                    scope.showPicker = 'date';
+                    scope.showPicker = scope.reOpenDefault === false ? 'date' : scope.reOpenDefault;
 
                 // if a on-close-fn has been defined, lets call it
                 // we only call this if closePressed is defined!
@@ -534,6 +553,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 isOpen: '=?',
                 enableDate: '=?',
                 enableTime: '=?',
+                initialPicker: '=?',
+                reOpenDefault: '=?',
                 dateDisabled: '&',
                 customClass: '&',
                 whenClosed: '&'
