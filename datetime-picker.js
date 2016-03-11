@@ -321,16 +321,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     if (scope.showPicker != 'time' && date != null) {
                         // if time is enabled, swap to timePicker
                         if (scope.enableTime) {
-                            // need to delay this, else timePicker never shown
-                            $timeout(function() {
-                                scope.showPicker = 'time';
-                            }, 0);
-
-                            // in order to update the timePicker, we need to update the model reference!
-                            // as found here https://angular-ui.github.io/bootstrap/#/timepicker
-                            $timeout(function() {
-                                scope.date = new Date(scope.date);
-                            }, 100);
+                            scope.open('time');
                         } else {
                             scope.close(false);
                         }
@@ -368,6 +359,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         scope.$broadcast('uib:datepicker.focus');
                         $document.bind('click', documentClickBind);
                     }, 0, false);
+
+                    scope.open(scope.showPicker);
                 } else {
                     $document.unbind('click', documentClickBind);
                 }
@@ -408,6 +401,24 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.close();
             };
 
+            scope.open = function (picker, evt) {
+                if (angular.isDefined(evt)) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
+
+                // need to delay this, else timePicker never shown
+                $timeout(function() {
+                    scope.showPicker = picker;
+                }, 0);
+
+                // in order to update the timePicker, we need to update the model reference!
+                // as found here https://angular-ui.github.io/bootstrap/#/timepicker
+                $timeout(function() {
+                    scope.date = new Date(scope.date);
+                }, 50);
+            };
+
             scope.close = function (closePressed) {
                 scope.isOpen = false;
 
@@ -421,13 +432,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     scope.whenClosed({ args: {closePressed: closePressed, openDate: cache['openDate'] || null, closeDate: scope.date } });
 
                 element[0].focus();
-            };
-
-            scope.changePicker = function (evt, picker) {
-                evt.preventDefault();
-                evt.stopPropagation();
-
-                scope.showPicker = picker;
             };
 
             scope.$on('$destroy', function () {

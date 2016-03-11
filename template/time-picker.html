@@ -8,7 +8,7 @@
             <button type="button" class="btn btn-sm btn-danger" ng-if="doShow('clear')" ng-click="select('clear')">{{ getText('clear') }}</button>
         </span>
         <span class="btn-group pull-right" ng-if="(doShow('date') && enableDate) || doShow('close')" >
-            <button type="button" class="btn btn-sm btn-default" ng-if="doShow('date') && enableDate" ng-click="changePicker($event, 'date')">{{ getText('date')}}</button>
+            <button type="button" class="btn btn-sm btn-default" ng-if="doShow('date') && enableDate" ng-click="open('date', $event)">{{ getText('date')}}</button>
             <button type="button" class="btn btn-sm btn-success" ng-if="doShow('close')" ng-click="close(true)">{{ getText('close') }}</button>
         </span>
     </li>
