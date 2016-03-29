@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.2.3
-// Released: 2016-03-11 
+// Released: 2016-03-29 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -523,6 +523,16 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
             }
 
+				function validateMinMax(value) {
+					if (scope.watchData.minDate && value < scope.watchData.minDate) {
+						 return false;
+					 } else if (scope.watchData.maxDate && value > scope.watchData.maxDate) {
+						 return false;
+					 } else {
+						 return true;
+					 }
+				}
+
             function validator(modelValue, viewValue) {
                 var value = modelValue || viewValue;
 
@@ -537,11 +547,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 if (!value) {
                     return true;
                 } else if (angular.isDate(value) && !isNaN(value)) {
-                    return true;
+                    return validateMinMax (value);
                 } else if (angular.isDate(new Date(value)) && !isNaN(new Date(value).valueOf())) {
-                    return true;
+                    return validateMinMax (new Date(value));
                 } else if (angular.isString(value)) {
-                    return !isNaN(parseDateString(viewValue));
+                    return !isNaN(parseDateString(viewValue)) && validateMinMax(parseDateString(viewVialue));
                 } else {
                     return false;
                 }
@@ -588,6 +598,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             templateUrl: 'template/time-picker.html'
         };
     });
+
 angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
   'use strict';
 
