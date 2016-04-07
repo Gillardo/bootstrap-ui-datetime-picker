@@ -370,9 +370,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
 
                 $scope.dateSelection(date);
-
-                if (opt == 'clear')
-                    $scope.close();
             };
 
             $scope.open = function (picker, evt) {
@@ -388,9 +385,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                 // in order to update the timePicker, we need to update the model reference!
                 // as found here https://angular-ui.github.io/bootstrap/#/timepicker
-                $timeout(function() {
-                    $scope.date = new Date($scope.date);
-                }, 50);
+                if (picker == 'time') {
+                    $timeout(function() {
+                        $scope.date = parseDateString(ngModel.$viewValue);
+                    }, 50);
+                }
             };
 
             $scope.close = function (closePressed) {
