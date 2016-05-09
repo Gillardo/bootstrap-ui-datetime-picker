@@ -51,9 +51,9 @@ The initial picker to open when the control is first pressed
 ##### reOpenDefault
 The picker to set as the picker to open once the control has already been opened at least once. Setting to `false` will default to the date picker if both date and time are enabled, or just the enabled control if only time or date is in use.
 ##### datepickerOptions
-Object to configure settings for the datepicker (can be found on angularUI site)
+Object to configure settings for the datepicker (can be found on [angularUI site](https://angular-ui.github.io/bootstrap/#/datepicker))
 ##### timepickerOptions
-Object to configure settings for the timepicker (can be found on angularUI site)
+Object to configure settings for the timepicker (can be found on [angularUI site](https://angular-ui.github.io/bootstrap/#/timepicker))
 ##### defaultTime
 Initial time when a new date is selected (e.g. "14:00:00" or "2:00 pm")
 ##### whenClosed
