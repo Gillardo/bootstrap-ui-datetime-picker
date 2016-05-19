@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.3.1
-// Released: 2016-04-07 
+// Released: 2016-04-07
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -365,8 +365,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     var now = new Date();
                     if (angular.isDate($scope.date)) {
                         date = new Date($scope.date);
-                        date.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
-                        date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+                        if (opt === 'today') {
+                            date.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+                        }else if(opt == 'now') {
+                            date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+                        }
                     } else {
                         date = now;
                     }
@@ -380,7 +383,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-
+                //prevent null pointer exception
+                if(!$scope.date) {
+                    var now = new Date();
+                    now.setHours(0,0,0,0);
+                    $scope.date = now;
+                }
                 // need to delay this, else timePicker never shown
                 $timeout(function() {
                     $scope.showPicker = picker;
