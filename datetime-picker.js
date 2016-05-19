@@ -401,10 +401,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                 // if a on-close-fn has been defined, lets call it
                 // we only call this if closePressed is defined!
-                if (angular.isDefined(closePressed))
+                if (angular.isDefined(closePressed)) {
                     $scope.whenClosed({ args: { closePressed: closePressed, openDate: cache['openDate'] || null, closeDate: $scope.date } });
-
-                $element[0].focus();
+                }
+                else {
+                    $element[0].focus();
+                }
             };
 
             $scope.$on('$destroy', function () {
