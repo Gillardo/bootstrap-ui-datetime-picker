@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.3.1
-// Released: 2016-04-07 
+// Released: 2016-05-27 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -42,6 +42,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             }
         },
         closeOnDateSelection: true,
+        closeOnTimeNow: true,
         appendToBody: false,
         altInputFormats: [],
         ngModelOptions: { }
@@ -51,6 +52,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             var dateFormat = uiDatetimePickerConfig.dateFormat,
                 ngModel, ngModelOptions, $popup, cache = {}, watchListeners = [],
                 closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ? $scope.$parent.$eval($attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
+                closeOnTimeNow = angular.isDefined($attrs.closeOnTimeNow) ? $scope.$parent.$eval($attrs.closeOnTimeNow) : uiDatetimePickerConfig.closeOnTimeNow,
                 appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ? $scope.$parent.$eval($attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
                 altInputFormats = angular.isDefined($attrs.altInputFormats) ? $scope.$parent.$eval($attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats;
 
@@ -236,7 +238,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             };
 
             // Inner change
-            $scope.dateSelection = function (dt) {
+            $scope.dateSelection = function (dt, opt) {
 
                 // check if timePicker is being shown and merge dates, so that the date
                 // part is never changed, only the time
@@ -291,6 +293,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         } else {
                             $scope.close(false);
                         }
+                    } else if (closeOnTimeNow && $scope.showPicker === 'time' && date != null && opt === 'now') {
+                        $scope.close(false);
                     }
                 }
 
@@ -372,7 +376,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
                 }
 
-                $scope.dateSelection(date);
+                $scope.dateSelection(date, opt);
             };
 
             $scope.open = function (picker, evt) {
@@ -404,10 +408,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                 // if a on-close-fn has been defined, lets call it
                 // we only call this if closePressed is defined!
-                if (angular.isDefined(closePressed))
+                if (angular.isDefined(closePressed)) {
                     $scope.whenClosed({ args: { closePressed: closePressed, openDate: cache['openDate'] || null, closeDate: $scope.date } });
-
-                $element[0].focus();
+                } else {
+                    $element[0].focus();
+                }
             };
 
             $scope.$on('$destroy', function () {

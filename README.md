@@ -26,6 +26,7 @@ You have the following properties available to use with the directive.  All are 
 * ngModel (required) - Your date object
 * isOpen - (true/false)
 * closeOnDateSelection (true/false)
+* closeOnTimeNow (true/false)
 * enableDate (true/false)
 * enableTime (true/false)
 * buttonBar (object)
@@ -39,6 +40,8 @@ You have the following properties available to use with the directive.  All are 
 Whether the popup/dropdown is visible or not. Defaults to false
 ##### closeOnDateSelection
 Close popup once a date has been chosen. TimePicker will stay open until user closes.
+##### closeOnTimeNow
+Close popup once a time has been chosen via now button.
 ##### enableDate
 Whether you would like the user to be able to select a date. Defaults to true
 ##### enableTime
@@ -103,6 +106,7 @@ Now datetimePicker options are globally set by default.  If you do not state the
             }
         },
         closeOnDateSelection: true,
+        closeOnTimeNow: true,
         appendToBody: false,
         altInputFormats: [],
         ngModelOptions: { }

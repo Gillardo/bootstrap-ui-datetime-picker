@@ -39,6 +39,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             }
         },
         closeOnDateSelection: true,
+        closeOnTimeNow: true,
         appendToBody: false,
         altInputFormats: [],
         ngModelOptions: { }
@@ -48,6 +49,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             var dateFormat = uiDatetimePickerConfig.dateFormat,
                 ngModel, ngModelOptions, $popup, cache = {}, watchListeners = [],
                 closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ? $scope.$parent.$eval($attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
+                closeOnTimeNow = angular.isDefined($attrs.closeOnTimeNow) ? $scope.$parent.$eval($attrs.closeOnTimeNow) : uiDatetimePickerConfig.closeOnTimeNow,
                 appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ? $scope.$parent.$eval($attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
                 altInputFormats = angular.isDefined($attrs.altInputFormats) ? $scope.$parent.$eval($attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats;
 
@@ -233,7 +235,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             };
 
             // Inner change
-            $scope.dateSelection = function (dt) {
+            $scope.dateSelection = function (dt, opt) {
 
                 // check if timePicker is being shown and merge dates, so that the date
                 // part is never changed, only the time
@@ -288,6 +290,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         } else {
                             $scope.close(false);
                         }
+                    } else if (closeOnTimeNow && $scope.showPicker === 'time' && date != null && opt === 'now') {
+                        $scope.close(false);
                     }
                 }
 
@@ -369,7 +373,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
                 }
 
-                $scope.dateSelection(date);
+                $scope.dateSelection(date, opt);
             };
 
             $scope.open = function (picker, evt) {
@@ -403,8 +407,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 // we only call this if closePressed is defined!
                 if (angular.isDefined(closePressed)) {
                     $scope.whenClosed({ args: { closePressed: closePressed, openDate: cache['openDate'] || null, closeDate: $scope.date } });
-                }
-                else {
+                } else {
                     $element[0].focus();
                 }
             };
