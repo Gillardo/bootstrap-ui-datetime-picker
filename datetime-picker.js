@@ -42,7 +42,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         closeOnTimeNow: true,
         appendToBody: false,
         altInputFormats: [],
-        ngModelOptions: { }
+        ngModelOptions: { },
+        saveAsString: false,
     })
     .controller('DateTimePickerController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function ($scope, $element, $attrs, $compile, $parse, $document, $timeout, $uibPosition, dateFilter, uibDateParser, uiDatetimePickerConfig, $rootScope) {
@@ -51,7 +52,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ? $scope.$parent.$eval($attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
                 closeOnTimeNow = angular.isDefined($attrs.closeOnTimeNow) ? $scope.$parent.$eval($attrs.closeOnTimeNow) : uiDatetimePickerConfig.closeOnTimeNow,
                 appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ? $scope.$parent.$eval($attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
-                altInputFormats = angular.isDefined($attrs.altInputFormats) ? $scope.$parent.$eval($attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats;
+                altInputFormats = angular.isDefined($attrs.altInputFormats) ? $scope.$parent.$eval($attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats,
+                saveAsString = angular.isDefined($attrs.saveAsString) ? $scope.$parent.$eval($attrs.saveAsString) : uiDatetimePickerConfig.saveAsString;
 
             this.init = function(_ngModel) {
                 ngModel = _ngModel;
@@ -202,6 +204,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     });
                 }
 
+                if (saveAsString) {
+                    if (angular.isFunction(saveAsString))
+                        ngModel.$parsers.push(saveAsString);
+                    else
+                        ngModel.$parsers.push(saveAsStringParser);
+                }
                 // Detect changes in the view from the text box
                 ngModel.$viewChangeListeners.push(function() {
                     $scope.date = parseDateString(ngModel.$viewValue);
@@ -219,6 +227,21 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     $element.after($popup);
                 }
 
+                function saveAsStringParser(value) {
+                    if (!value || angular.isString(value) || !angular.isDate(value) || isNaN(value))
+                        return value;
+
+                    if (saveAsString === 'ISO')
+                        return value.toISOString();
+
+                    if (!isHtml5DateInput) {
+                        dateFormat = dateFormat.replace(/M!/, 'MM')
+                            .replace(/d!/, 'dd');
+                        return uibDateParser.filter(uibDateParser.fromTimezone(value, ngModelOptions.timezone), dateFormat);
+                    } else {
+                        return uibDateParser.fromTimezone(value, ngModelOptions.timezone).toLocaleString();
+                    }
+                }
             };
 
             // get text

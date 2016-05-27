@@ -35,6 +35,7 @@ You have the following properties available to use with the directive.  All are 
 * datepickerOptions (object)
 * timepickerOptions (object)
 * defaultTime (string)
+* saveAsString (boolean|function)
  
 ##### isOpen
 Whether the popup/dropdown is visible or not. Defaults to false
@@ -61,6 +62,9 @@ Object to configure settings for the timepicker (can be found on [angularUI site
 Initial time when a new date is selected (e.g. "14:00:00" or "2:00 pm")
 ##### whenClosed
 An callback function to call when the picker dropdown is closed. See demo for more details.
+##### saveAsString
+A boolean value to switch saving the Date to the model as a string, or a ngModel.$parsers function to take over the transformation from the Date object to a string.
+Note: Ensure you have a proper parser string in the altInputFormat array to convert the string back to a Date object if you're transforming into a non-standard date string.
 
 ## uiDatetimePickerConfig
 Now datetimePicker options are globally set by default.  If you do not state the values within the declaration, the config options are used instead.  Here are the default options
@@ -109,7 +113,8 @@ Now datetimePicker options are globally set by default.  If you do not state the
         closeOnTimeNow: true,
         appendToBody: false,
         altInputFormats: [],
-        ngModelOptions: { }
+        ngModelOptions: { },
+        saveAsString: false,
     })
 ```
 
