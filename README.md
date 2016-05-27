@@ -35,7 +35,8 @@ You have the following properties available to use with the directive.  All are 
 * datepickerOptions (object)
 * timepickerOptions (object)
 * defaultTime (string)
-* saveAsString (boolean|function)
+* saveAs (boolean|function|'ISO'|'json'|'number')
+* readAs (boolean|function)
  
 ##### isOpen
 Whether the popup/dropdown is visible or not. Defaults to false
@@ -62,9 +63,18 @@ Object to configure settings for the timepicker (can be found on [angularUI site
 Initial time when a new date is selected (e.g. "14:00:00" or "2:00 pm")
 ##### whenClosed
 An callback function to call when the picker dropdown is closed. See demo for more details.
-##### saveAsString
+##### saveAs
 A boolean value to switch saving the Date to the model as a string, or a ngModel.$parsers function to take over the transformation from the Date object to a string.
-Note: Ensure you have a proper parser string in the altInputFormat array to convert the string back to a Date object if you're transforming into a non-standard date string.
+Possible values:
+* true
+* false
+* 'ISO' (Date.toISOString())
+* 'json' (Date.toJSON())
+* 'number' (Date.valueOf())
+* a function accepting a value parameter and returning the converted value to save to the model.
+Note: If using an html5 input type, the default parser will use Date.toLocaleString() to convert to a string.  To override this, provide a function with your desired formatted conversion.  Otherwise all other input types will use the supplied date format.
+##### readAs
+A boolean value to convert a string (or Date.valueOf()) value back to a Date object from the ngModel, or a ngModel.$formatters function to take over the transformation completely.
 
 ## uiDatetimePickerConfig
 Now datetimePicker options are globally set by default.  If you do not state the values within the declaration, the config options are used instead.  Here are the default options
@@ -114,7 +124,8 @@ Now datetimePicker options are globally set by default.  If you do not state the
         appendToBody: false,
         altInputFormats: [],
         ngModelOptions: { },
-        saveAsString: false,
+        saveAs: false,
+        readAs: false,
     })
 ```
 

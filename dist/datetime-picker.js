@@ -46,7 +46,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         appendToBody: false,
         altInputFormats: [],
         ngModelOptions: { },
-        saveAsString: false,
+        saveAs: false,
+        readAs: false,
     })
     .controller('DateTimePickerController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function ($scope, $element, $attrs, $compile, $parse, $document, $timeout, $uibPosition, dateFilter, uibDateParser, uiDatetimePickerConfig, $rootScope) {
@@ -56,7 +57,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 closeOnTimeNow = angular.isDefined($attrs.closeOnTimeNow) ? $scope.$parent.$eval($attrs.closeOnTimeNow) : uiDatetimePickerConfig.closeOnTimeNow,
                 appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ? $scope.$parent.$eval($attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
                 altInputFormats = angular.isDefined($attrs.altInputFormats) ? $scope.$parent.$eval($attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats,
-                saveAsString = angular.isDefined($attrs.saveAsString) ? $scope.$parent.$eval($attrs.saveAsString) : uiDatetimePickerConfig.saveAsString;
+                saveAs = angular.isDefined($attrs.saveAs) ? $scope.$parent.$eval($attrs.saveAs) || $attrs.saveAs : uiDatetimePickerConfig.saveAs,
+                readAs = angular.isDefined($attrs.readAs) ? $scope.$parent.$eval($attrs.readAs) : uiDatetimePickerConfig.readAs;
 
             this.init = function(_ngModel) {
                 ngModel = _ngModel;
@@ -207,11 +209,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     });
                 }
 
-                if (saveAsString) {
-                    if (angular.isFunction(saveAsString))
-                        ngModel.$parsers.push(saveAsString);
+                if (saveAs) {
+                    // If it is determined closure var's need to be exposed to the parser, don't add the formatter here.
+                    // Instead just call the method from within the stock parser with this context and/or any needed closure variables.
+                    if (angular.isFunction(saveAs))
+                        ngModel.$parsers.push(saveAs);
                     else
-                        ngModel.$parsers.push(saveAsStringParser);
+                        ngModel.$parsers.push(saveAsParser);
+
+                    // Assuming if saveAs is !false, we'll want to convert, either pass the function, or the stock str/num -> Date obj formatter.
+                    if (angular.isFunction(readAs))
+                        ngModel.$formatters.push(readAs);
+                    else
+                        ngModel.$formatters.push(readAsFormatter);
                 }
                 // Detect changes in the view from the text box
                 ngModel.$viewChangeListeners.push(function() {
@@ -230,12 +240,29 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     $element.after($popup);
                 }
 
-                function saveAsStringParser(value) {
+                function readAsFormatter(value) {
+                    if (ngModel.$isEmpty(value))
+                        return value;
+
+                    var d = new Date(value);
+                    if (angular.isDate(d) && !isNaN(d))
+                        return d;
+
+                    return value;
+                }
+
+                function saveAsParser(value) {
                     if (!value || angular.isString(value) || !angular.isDate(value) || isNaN(value))
                         return value;
 
-                    if (saveAsString === 'ISO')
+                    if (saveAs === 'ISO')
                         return value.toISOString();
+
+                    if (saveAs === 'json')
+                        return value.toJSON();
+
+                    if (saveAs === 'number')
+                        return value.valueOf();
 
                     if (!isHtml5DateInput) {
                         dateFormat = dateFormat.replace(/M!/, 'MM')
