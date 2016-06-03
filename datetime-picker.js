@@ -347,13 +347,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             };
 
-            $scope.keydown = function(evt) {
-                if (evt.which === 27) {
-                    $scope.close(false);
-                    $element[0].focus();
-                }
-            };
-
             $scope.$watch('isOpen', function (value) {
                 $scope.dropdownStyle = {
                     display: value ? 'block' : 'none'
