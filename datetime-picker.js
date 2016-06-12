@@ -573,7 +573,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 } else if (angular.isDate(new Date(value)) && !isNaN(new Date(value).valueOf())) {
                     return validateMinMax (new Date(value));
                 } else if (angular.isString(value)) {
-                    return !isNaN(parseDateString(viewValue)) && validateMinMax(parseDateString(viewVialue));
+                    return !isNaN(parseDateString(viewValue)) && validateMinMax(parseDateString(viewValue));
                 } else {
                     return false;
                 }
