@@ -276,6 +276,13 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 return $scope.buttonBar[key].text || uiDatetimePickerConfig.buttonBar[key].text;
             };
 
+            $scope.keydown = function(evt) {
+                if (evt.which === 27) {
+                    $scope.close(false);
+                    $element[0].focus();
+                }
+            };
+
             // determine if button is to be shown or not
             $scope.doShow = function(key) {
                 if (angular.isDefined($scope.buttonBar[key].show))
