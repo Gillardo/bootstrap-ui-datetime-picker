@@ -167,7 +167,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     $scope.timepickerOptions = {};
 
                 for (var key in $scope.timepickerOptions) {
-                    timepickerEl.attr(cameltoDash(key), 'timepickerOptions.' + key);
+                    // Template url needs to be passed as string rather than scope variable
+                    // as it is not assessed by bootstrap ui
+                    if(key == "templateUrl")
+                        timepickerEl.attr(cameltoDash(key), $scope.timepickerOptions.templateUrl);
+                    else
+                        timepickerEl.attr(cameltoDash(key), 'timepickerOptions.' + key);
                 }
 
                 // watch attrs - NOTE: minDate and maxDate are used with datePicker and timePicker.  By using the minDate and maxDate
