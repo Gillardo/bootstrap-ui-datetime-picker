@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.4.3
-// Released: 2016-07-14 
+// Version: 2.4.4
+// Released: 2016-09-19 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -167,12 +167,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     $scope.timepickerOptions = {};
 
                 for (var key in $scope.timepickerOptions) {
-                    // Template url needs to be passed as string rather than scope variable
-                    // as it is not assessed by bootstrap ui
-                    if(key == "templateUrl")
-                        timepickerEl.attr(cameltoDash(key), $scope.timepickerOptions.templateUrl);
-                    else
-                        timepickerEl.attr(cameltoDash(key), 'timepickerOptions.' + key);
+                    timepickerEl.attr(cameltoDash(key), 'timepickerOptions.' + key);
                 }
 
                 // watch attrs - NOTE: minDate and maxDate are used with datePicker and timePicker.  By using the minDate and maxDate
