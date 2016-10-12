@@ -15,27 +15,33 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             show: true,
             now: {
                 show: true,
-                text: 'Now'
+                text: 'Now',
+                cls: 'btn-sm btn-default'
             },
             today: {
                 show: true,
-                text: 'Today'
+                text: 'Today',
+                cls: 'btn-sm btn-default'
             },
             clear: {
                 show: true,
-                text: 'Clear'
+                text: 'Clear',
+                cls: 'btn-sm btn-default'
             },
             date: {
                 show: true,
-                text: 'Date'
+                text: 'Date',
+                cls: 'btn-sm btn-default'
             },
             time: {
                 show: true,
-                text: 'Time'
+                text: 'Time',
+                cls: 'btn-sm btn-default'
             },
             close: {
                 show: true,
-                text: 'Close'
+                text: 'Close',
+                cls: 'btn-sm btn-default'
             }
         },
         closeOnDateSelection: true,
@@ -274,6 +280,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             // get text
             $scope.getText = function (key) {
                 return $scope.buttonBar[key].text || uiDatetimePickerConfig.buttonBar[key].text;
+            };
+
+            // get class
+            $scope.getClass = function (key) {
+                return $scope.buttonBar[key].cls || uiDatetimePickerConfig.buttonBar[key].cls;
             };
 
             $scope.keydown = function (evt) {
