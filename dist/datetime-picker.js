@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.4.4
-// Released: 2016-09-19 
+// Released: 2016-11-01 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -318,6 +318,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             date.setMilliseconds(dt.getMilliseconds());
                             dt = date;
                         }
+                    
+                    // In case we have an invalid time, save the previous date part
+                    } else {
+                        $scope.oldDate = $scope.date;
                     }
                 }
 
@@ -334,6 +338,13 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         }
                     }
                     $scope.date = dt;
+
+                    if (dt && $scope.oldDate) {
+                        dt.setDate($scope.oldDate.getDate());
+                        dt.setMonth($scope.oldDate.getMonth());
+                        dt.setFullYear($scope.oldDate.getFullYear());
+                        delete $scope.oldDate;
+                    }
                 }
 
                 var date = $scope.date ? dateFilter($scope.date, dateFormat) : null;
