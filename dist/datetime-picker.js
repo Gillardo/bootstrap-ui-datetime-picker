@@ -657,3 +657,5 @@ angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($t
   );
 
 }]);
+
+module.exports = 'ui.bootstrap.datetimepicker'
