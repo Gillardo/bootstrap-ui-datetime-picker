@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
 // Version: 2.4.4
-// Released: 2016-11-01 
+// Released: 2017-01-12 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -679,5 +679,3 @@ angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($t
   );
 
 }]);
-
-module.exports = 'ui.bootstrap.datetimepicker'
