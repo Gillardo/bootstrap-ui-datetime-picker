@@ -289,8 +289,14 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             $scope.keydown = function (evt) {
                 if (evt.which === 27) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+
                     $scope.close(false);
-                    $element[0].focus();
+
+                    $timeout(function(){
+                        $element[0].focus();
+                    }, 0);
                 }
             };
 

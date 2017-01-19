@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.5.0
-// Released: 2017-01-12 
+// Version: 2.5.1
+// Released: 2017-01-19 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -292,8 +292,14 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             $scope.keydown = function (evt) {
                 if (evt.which === 27) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+
                     $scope.close(false);
-                    $element[0].focus();
+
+                    $timeout(function(){
+                        $element[0].focus();
+                    }, 0);
                 }
             };
 
@@ -665,7 +671,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             templateUrl: 'template/time-picker.html'
         };
     });
-
 angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -679,3 +684,5 @@ angular.module('ui.bootstrap.datetimepicker').run(['$templateCache', function($t
   );
 
 }]);
+
+module.exports = 'ui.bootstrap.datetimepicker';

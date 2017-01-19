@@ -8,7 +8,7 @@ module.exports = function (grunt) {
         ngtemplates: {
             app: {
                 src: [
-                    'template/*.html',
+                    'template/*.html'
                 ],
                 dest: 'dist/datetime-picker.tpls.js',
                 options: {
@@ -33,7 +33,8 @@ module.exports = function (grunt) {
             app: {
                 src: [
                     'datetime-picker.js',
-                    '<%= ngtemplates.app.dest %>'
+                    '<%= ngtemplates.app.dest %>',
+                    'module-export.js'
                 ],
                 dest: 'dist/datetime-picker.js'
             }
