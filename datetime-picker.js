@@ -113,6 +113,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
 
                 // popup element used to display calendar
+                var timezone = null;
                 var popupEl = angular.element('' +
                     '<div date-picker-wrap>' +
                     '<div uib-datepicker></div>' +
@@ -131,8 +132,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     }
 
                     popupEl.attr('ng-model-options', 'ngModelOptions');
-                } else {
-                    timezone = null;
                 }
 
                 // get attributes from directive
@@ -167,7 +166,9 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 var timepickerEl = angular.element(popupEl.children()[1]);
 
                 if (!$scope.timepickerOptions)
-                    $scope.timepickerOptions = {};
+                    $scope.timepickerOptions = {
+                        showMeridian: true
+                    };
 
                 for (var key in $scope.timepickerOptions) {
                     timepickerEl.attr(cameltoDash(key), 'timepickerOptions.' + key);
