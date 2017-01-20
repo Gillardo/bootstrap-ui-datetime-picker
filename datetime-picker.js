@@ -441,7 +441,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-				
+                
                 var date = null;
                 var isNow = opt === 'now';
 
@@ -484,7 +484,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-				
+                
                 $scope.isOpen = false;
 
                 // if enableDate and enableTime are true, reopen the picker in date mode first
