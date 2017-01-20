@@ -232,7 +232,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     $scope.date = parseDateString(ngModel.$viewValue);
                 });
 
-                $element.bind('keydown', inputKeydownBind);
+                $element.on('keydown', inputKeydownBind);
 
                 $popup = $compile(popupEl)($scope);
                 // Prevent jQuery cache memory leak (template is now redundant after linking)
@@ -403,12 +403,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                     $timeout(function () {
                         $scope.$broadcast('uib:datepicker.focus');
-                        $document.bind('click', documentClickBind);
+                        $document.on('click', documentClickBind);
                     }, 0, false);
 
                     $scope.open($scope.showPicker);
                 } else {
-                    $document.unbind('click', documentClickBind);
+                    $document.off('click', documentClickBind);
                 }
             });
 
@@ -513,8 +513,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     a();
                 });
                 $popup.remove();
-                $element.unbind('keydown', inputKeydownBind);
-                $document.unbind('click', documentClickBind);
+                $element.off('keydown', inputKeydownBind);
+                $document.off('click', documentClickBind);
             });
 
             function documentClickBind(evt) {
