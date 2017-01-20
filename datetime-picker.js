@@ -54,7 +54,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
     })
     .controller('DateTimePickerController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$timeout', '$uibPosition', 'dateFilter', 'uibDateParser', 'uiDatetimePickerConfig', '$rootScope',
         function ($scope, $element, $attrs, $compile, $parse, $document, $timeout, $uibPosition, dateFilter, uibDateParser, uiDatetimePickerConfig, $rootScope) {
-            var dateFormat = uiDatetimePickerConfig.dateFormat,
+            var timezone = null,
+                dateFormat = uiDatetimePickerConfig.dateFormat,
                 ngModel, ngModelOptions, $popup, cache = {}, watchListeners = [],
                 closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ? $scope.$parent.$eval($attrs.closeOnDateSelection) : uiDatetimePickerConfig.closeOnDateSelection,
                 closeOnTimeNow = angular.isDefined($attrs.closeOnTimeNow) ? $scope.$parent.$eval($attrs.closeOnTimeNow) : uiDatetimePickerConfig.closeOnTimeNow,
@@ -113,7 +114,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
 
                 // popup element used to display calendar
-                var timezone = null;
                 var popupEl = angular.element('' +
                     '<div date-picker-wrap>' +
                     '<div uib-datepicker></div>' +
@@ -441,7 +441,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-                
+				
                 var date = null;
                 var isNow = opt === 'now';
 
@@ -484,7 +484,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-                
+				
                 $scope.isOpen = false;
 
                 // if enableDate and enableTime are true, reopen the picker in date mode first
