@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.5.3
-// Released: 2017-01-20 
+// Version: 2.5.4
+// Released: 2017-01-23 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -51,7 +51,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         closeOnTimeNow: true,
         appendToBody: false,
         altInputFormats: [],
-        ngModelOptions: {},
+        ngModelOptions: { timezone: null },
         saveAs: false,
         readAs: false
     })
@@ -116,7 +116,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
 
                 // popup element used to display calendar
-                var timezone = null;
                 var popupEl = angular.element('' +
                     '<div date-picker-wrap>' +
                     '<div uib-datepicker></div>' +
@@ -125,21 +124,17 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     '<div uib-timepicker style="margin:0 auto"></div>' +
                     '</div>');
 
-                if (ngModelOptions) {
-                    timezone = ngModelOptions.timezone;
-                    $scope.ngModelOptions = angular.copy(ngModelOptions);
-                    $scope.ngModelOptions.timezone = null;
-                    if ($scope.ngModelOptions.updateOnDefault === true) {
-                        $scope.ngModelOptions.updateOn = $scope.ngModelOptions.updateOn ?
-                        $scope.ngModelOptions.updateOn + ' default' : 'default';
-                    }
+                $scope.ngModelOptions = angular.copy(ngModelOptions);
 
-                    popupEl.attr('ng-model-options', 'ngModelOptions');
+                if ($scope.ngModelOptions.updateOnDefault === true) {
+                    $scope.ngModelOptions.updateOn = $scope.ngModelOptions.updateOn ?
+                    $scope.ngModelOptions.updateOn + ' default' : 'default';
                 }
 
                 // get attributes from directive
                 popupEl.attr({
                     'ng-model': 'date',
+                    'ng-model-options': 'ngModelOptions',
                     'ng-change': 'dateSelection(date)'
                 });
 
@@ -417,14 +412,14 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
             $scope.isDisabled = function (date) {
                 if (date === 'today' || date === 'now')
-                    date = uibDateParser.fromTimezone(new Date(), timezone);
+                    date = uibDateParser.fromTimezone(new Date(), ngModelOptions.timezone);
 
                 var dates = {};
                 angular.forEach(['minDate', 'maxDate'], function (key) {
                     if (!$scope.datepickerOptions[key]) {
                         dates[key] = null;
                     } else if (angular.isDate($scope.datepickerOptions[key])) {
-                        dates[key] = uibDateParser.fromTimezone(new Date($scope.datepickerOptions[key]), timezone);
+                        dates[key] = uibDateParser.fromTimezone(new Date($scope.datepickerOptions[key]), ngModelOptions.timezone);
                     } else {
                         dates[key] = new Date(dateFilter($scope.datepickerOptions[key], 'medium'));
                     }
