@@ -175,23 +175,12 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 // watch attrs - NOTE: minDate and maxDate are used with datePicker and timePicker.  By using the minDate and maxDate
                 // with the timePicker, you can dynamically set the min and max time values.  This cannot be done using the min and max values
                 // with the timePickerOptions
-                // add a solution to set time picker options min and max.
                 angular.forEach(['minDate', 'maxDate', 'initDate'], function (key) {
                     if ($scope.datepickerOptions[key]) {
                         if (key == 'minDate') {
-                            if ($scope.timepickerOptions.min) {
-                                timepickerEl.attr('min', 'timepickerOptions.min');
-                            } else {
-                                timepickerEl.attr('min', 'datepickerOptions.minDate');
-                            }
-                            
-                        } else if (key == 'maxDate') {
-                            if ($scope.timepickerOptions.max) {
-                                timepickerEl.attr('max', 'timepickerOptions.max');
-                            } else {
-                                timepickerEl.attr('max', 'datepickerOptions.maxDate');
-                            }
-                        }            
+                            timepickerEl.attr('min', 'datepickerOptions.minDate');
+                        } else if (key == 'maxDate')
+                            timepickerEl.attr('max', 'datepickerOptions.maxDate');
                     }
                 });
 
@@ -238,28 +227,6 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
                 // Detect changes in the view from the text box
                 ngModel.$viewChangeListeners.push(function () {
-                    if ($scope.timepickerOptions.min) {
-                        var startHour = new Date($scope.timepickerOptions.min).getHours(),
-                            starMinutes = new Date($scope.timepickerOptions.min).getMinutes(),
-                            startTime = new Date($scope.date);
-
-                        // set start time, that time picker should use.
-                        startTime.setHours(startHour);
-                        startTime.setMinutes(starMinutes);
-                        $scope.timepickerOptions.min = startTime;
-
-                    }  
-                    if ($scope.timepickerOptions.max) {
-                        var endHour = new Date($scope.timepickerOptions.max).getHours(),
-                            endMinutes = new Date($scope.timepickerOptions.max).getMinutes(),
-                            endTime = new Date($scope.date);
-
-                        // set start time, that time picker should use.
-                        endTime.setHours(endHour);
-                        endTime.setMinutes(endMinutes);
-                        $scope.timepickerOptions.max = endTime;
-                    }
-
                     $scope.date = parseDateString(ngModel.$viewValue);
                 });
 
