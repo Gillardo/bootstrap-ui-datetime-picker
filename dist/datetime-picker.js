@@ -178,9 +178,19 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 angular.forEach(['minDate', 'maxDate', 'initDate'], function (key) {
                     if ($scope.datepickerOptions[key]) {
                         if (key == 'minDate') {
-                            timepickerEl.attr('min', 'datepickerOptions.minDate');
-                        } else if (key == 'maxDate')
-                            timepickerEl.attr('max', 'datepickerOptions.maxDate');
+                            if ($scope.timepickerOptions.min) {
+                                timepickerEl.attr('min', 'timepickerOptions.min');
+                            } else {
+                                timepickerEl.attr('min', 'datepickerOptions.minDate');
+                            }
+                            
+                        } else if (key == 'maxDate') {
+                            if ($scope.timepickerOptions.max) {
+                                timepickerEl.attr('max', 'timepickerOptions.max');
+                            } else {
+                                timepickerEl.attr('max', 'datepickerOptions.maxDate');
+                            }
+                        }            
                     }
                 });
 
