@@ -238,6 +238,28 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 }
                 // Detect changes in the view from the text box
                 ngModel.$viewChangeListeners.push(function () {
+                    if ($scope.timepickerOptions.min) {
+                        var startHour = new Date($scope.timepickerOptions.min).getHours(),
+                            starMinutes = new Date($scope.timepickerOptions.min).getMinutes(),
+                            startDateTime = new Date($scope.date);
+
+                        // set start time, that time picker should use.
+                        startDateTime.setHours(startHour);
+                        startDateTime.setMinutes(starMinutes);
+                        $scope.timepickerOptions.min = startDateTime;
+
+                    }  
+                    if ($scope.timepickerOptions.max) {
+                        var endHour = new Date($scope.timepickerOptions.max).getHours(),
+                            endMinutes = new Date($scope.timepickerOptions.max).getMinutes(),
+                            endDateTime = new Date($scope.date);
+
+                        // set start time, that time picker should use.
+                        endDateTime.setHours(endHour);
+                        endDateTime.setMinutes(endMinutes);
+                        $scope.timepickerOptions.max = endDateTime;
+                    }
+
                     $scope.date = parseDateString(ngModel.$viewValue);
                 });
 
