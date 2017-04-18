@@ -171,7 +171,7 @@ For example, if i add this css code, you will see the difference to the calendar
 ## Example
 Here is an example to use the directive with a bootstrap input, displaying a calendar button
 
-####HTML
+#### HTML
 ```
 <p class="input-group">
     <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="myDate" is-open="isOpen"  />
@@ -180,7 +180,7 @@ Here is an example to use the directive with a bootstrap input, displaying a cal
     </span>
 </p>
 ```
-####JAVASCRIPT
+#### JAVASCRIPT
 
 ```
 app.controller('MyController', function() {
