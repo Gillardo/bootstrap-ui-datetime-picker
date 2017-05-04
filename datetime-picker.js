@@ -42,6 +42,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 show: true,
                 text: 'Close',
                 cls: 'btn-sm btn-default'
+            },
+            cancel: {
+                show: true,
+                text: 'Cancel',
+                cls: 'btn-sm btn-default'
             }
         },
         closeOnDateSelection: true,
@@ -61,7 +66,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ? $scope.$parent.$eval($attrs.datepickerAppendToBody) : uiDatetimePickerConfig.appendToBody,
                 altInputFormats = angular.isDefined($attrs.altInputFormats) ? $scope.$parent.$eval($attrs.altInputFormats) : uiDatetimePickerConfig.altInputFormats,
                 saveAs = angular.isDefined($attrs.saveAs) ? $scope.$parent.$eval($attrs.saveAs) || $attrs.saveAs : uiDatetimePickerConfig.saveAs,
-                readAs = angular.isDefined($attrs.readAs) ? $scope.$parent.$eval($attrs.readAs) : uiDatetimePickerConfig.readAs;
+                readAs = angular.isDefined($attrs.readAs) ? $scope.$parent.$eval($attrs.readAs) : uiDatetimePickerConfig.readAs,
+                currentDateTimeModelValue = null;
 
             this.init = function (_ngModel) {
                 ngModel = _ngModel;
@@ -487,11 +493,25 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 $scope.dateSelection(date, opt);
             };
 
+            $scope.cancel = function (evt) {
+                if (angular.isDefined(evt)) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
+
+                $element.val(dateFilter(currentDateTimeModelValue, dateFormat));
+                ngModel.$setViewValue(dateFilter(currentDateTimeModelValue, dateFormat));
+
+                $scope.close(false);
+            };
+
             $scope.open = function (picker, evt) {
                 if (angular.isDefined(evt)) {
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
+
+                currentDateTimeModelValue = $element.val();
 
                 // need to delay this, else timePicker never shown
                 $timeout(function () {
