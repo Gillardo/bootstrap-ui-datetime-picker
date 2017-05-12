@@ -187,14 +187,13 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                             } else {
                                 timepickerEl.attr('min', 'datepickerOptions.minDate');
                             }
-                            
                         } else if (key == 'maxDate') {
                             if ($scope.timepickerOptions.max) {
                                 timepickerEl.attr('max', 'timepickerOptions.max');
                             } else {
                                 timepickerEl.attr('max', 'datepickerOptions.maxDate');
                             }
-                        }            
+                        }
                     }
                 });
 
@@ -245,24 +244,20 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                         var startHour = new Date($scope.timepickerOptions.min).getHours(),
                             starMinutes = new Date($scope.timepickerOptions.min).getMinutes(),
                             startTime = new Date($scope.date);
-
                         // set start time, that time picker should use.
                         startTime.setHours(startHour);
                         startTime.setMinutes(starMinutes);
                         $scope.timepickerOptions.min = startTime;
-
-                    }  
+                    }
                     if ($scope.timepickerOptions.max) {
                         var endHour = new Date($scope.timepickerOptions.max).getHours(),
                             endMinutes = new Date($scope.timepickerOptions.max).getMinutes(),
                             endTime = new Date($scope.date);
-
                         // set start time, that time picker should use.
                         endTime.setHours(endHour);
                         endTime.setMinutes(endMinutes);
                         $scope.timepickerOptions.max = endTime;
                     }
-
                     $scope.date = parseDateString(ngModel.$viewValue);
                 });
 
