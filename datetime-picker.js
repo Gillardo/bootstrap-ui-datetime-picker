@@ -44,7 +44,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 cls: 'btn-sm btn-default'
             },
             cancel: {
-                show: true,
+                show: false,
                 text: 'Cancel',
                 cls: 'btn-sm btn-default'
             }
