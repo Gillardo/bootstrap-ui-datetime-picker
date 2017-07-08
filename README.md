@@ -123,6 +123,11 @@ Now datetimePicker options are globally set by default.  If you do not state the
             show: true,
             text: 'Close',
             cls: 'btn-sm btn-default'
+        },
+        cancel: {
+            show: true,
+            text: 'Cancel',
+            cls: 'btn-sm btn-default'
         }
     },
     closeOnDateSelection: true,
