@@ -118,6 +118,10 @@ app.controller('MyController', ['$scope', function($scope) {
             close: {
                 show: true,
                 text: 'Shut'
+            },
+            cancel: {
+                show: true,
+                text: 'Cancel'
             }
         }
     };
