@@ -1,6 +1,6 @@
 // https://github.com/Gillardo/bootstrap-ui-datetime-picker
-// Version: 2.6.0
-// Released: 2017-05-12 
+// Version: 2.6.1
+// Released: 2017-09-14 
 angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.position'])
     .constant('uiDatetimePickerConfig', {
         dateFormat: 'yyyy-MM-dd HH:mm',
@@ -602,6 +602,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             }
 
             function parseDateString(viewValue) {
+                viewValue = applyMask(viewValue) || viewValue;
+              
                 var date = uibDateParser.parse(viewValue, dateFormat, $scope.date);
                 if (isNaN(date)) {
                     for (var i = 0; i < altInputFormats.length; i++) {
@@ -631,7 +633,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 if (angular.isString(viewValue)) {
                     var date = parseDateString(viewValue);
                     if (!isNaN(date)) {
-                        return uibDateParser.toTimezone(date, ngModelOptions.timezone);
+                      var formattedDate = date ? dateFilter(date, dateFormat) : null;
+
+                      $element.val(formattedDate);
+                      ngModel.$setViewValue(formattedDate);
+                      return uibDateParser.toTimezone(date, ngModelOptions.timezone);
                     }
 
                     return undefined;
@@ -673,6 +679,45 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     return false;
                 }
             }
+            
+            /**
+          	* @description Applies the given mask to the given value.
+          	* @param {string} value The raw value.
+          	* @param {string} mask The mask string.
+          	* @return {string} The value after the mask is applied.
+          	*/
+          	function applyMask(value) {
+          	  
+          	  var allowedChars = "mMdDyYsShH";
+          		if (!value) {
+          			return "";
+          		}
+          		
+          		var pattern = dateFormat.replace(/[mMdDyYsShH]/gi, "\\d");
+          		var regx = new RegExp(pattern);
+          		if(regx.test(value)) {
+          		  return value;
+          		}
+          		
+          		var maskedValue = "";
+          
+          		var maskArray = dateFormat.split("");
+          
+          		var valueArray = value.split("");
+          		var valueArrayIndex = 0;
+          
+          		for (var maskArrayIndex = 0; maskArrayIndex < maskArray.length; maskArrayIndex++) {
+          			if (allowedChars.indexOf(maskArray[maskArrayIndex]) > -1) {
+          				if (valueArrayIndex >= valueArray.length) {
+          					break;
+          				}
+          				maskedValue += valueArray[valueArrayIndex++];
+          			} else {
+          				maskedValue += maskArray[maskArrayIndex];
+          			}
+          		}
+          		return maskedValue;
+          	}
 
         }])
     .directive('datetimePicker', function () {
