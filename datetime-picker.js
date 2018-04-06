@@ -364,7 +364,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 if (angular.isDefined(dt)) {
                     if (!$scope.date) {
                         var defaultTime = angular.isDefined($attrs.defaultTime) ? $attrs.defaultTime : uiDatetimePickerConfig.defaultTime;
-                        var t = new Date('2001-01-01 ' + defaultTime);
+                        var t = new Date('2001/01/01 ' + defaultTime);
 
                         if (!isNaN(t) && dt != null) {
                             dt.setHours(t.getHours());
