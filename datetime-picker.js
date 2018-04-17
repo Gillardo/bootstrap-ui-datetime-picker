@@ -9,6 +9,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
         },
         initialPicker: 'date',
         reOpenDefault: false,
+        disableFocusStealing: false,
         enableDate: true,
         enableTime: true,
         buttonBar: {
@@ -84,6 +85,9 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
 
                 // determine the picker to open when control is re-opened
                 $scope.reOpenDefault = angular.isDefined($attrs.reOpenDefault) ? $attrs.reOpenDefault : uiDatetimePickerConfig.reOpenDefault;
+
+                // determine if picker should steal focus from datebox on popup
+                $scope.disableFocusStealing = angular.isDefined($attrs.disableFocusStealing) ? $attrs.disableFocusStealing : uiDatetimePickerConfig.disableFocusStealing;
 
                 // check if an illegal combination of options exists
                 if ($scope.initialPicker == 'date' && !$scope.enableDate) {
@@ -423,7 +427,9 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                     $scope.dropdownStyle.left = position.left + 'px';
 
                     $timeout(function () {
-                        $scope.$broadcast('uib:datepicker.focus');
+                        if (!$scope.disableFocusStealing) {
+                            $scope.$broadcast('uib:datepicker.focus');
+                        }
                         $document.bind('click', documentClickBind);
                     }, 0, false);
 
