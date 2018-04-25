@@ -627,9 +627,11 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             }
 
             function parseDateString(viewValue) {
-                viewValue = applyMask(viewValue) || viewValue;
+                // disabled as not functioning correctly
+                // viewValue = applyMask(viewValue) || viewValue;
               
                 var date = uibDateParser.parse(viewValue, dateFormat, $scope.date);
+
                 if (isNaN(date)) {
                     for (var i = 0; i < altInputFormats.length; i++) {
                         date = uibDateParser.parse(viewValue, altInputFormats[i], $scope.date);
