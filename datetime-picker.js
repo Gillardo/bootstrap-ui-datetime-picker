@@ -765,6 +765,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
     .directive('datePickerWrap', function () {
         return {
             restrict: 'EA',
+            priority: 2,
             replace: true,
             transclude: true,
             templateUrl: 'template/date-picker.html'
@@ -774,6 +775,7 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
     .directive('timePickerWrap', function () {
         return {
             restrict: 'EA',
+            priority: 2,
             replace: true,
             transclude: true,
             templateUrl: 'template/time-picker.html'
