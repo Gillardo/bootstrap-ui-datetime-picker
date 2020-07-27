@@ -1,5 +1,7 @@
 # Bootstrap-UI/datetime-picker
 
+# This project is not actively maintained at the moment, as i work with Angular now and not AngularJs.  If you have a bug please submit a PR and i will go over the change and pull it in.
+
 AngularJs directive to use a date and/or time picker as a dropdown from an input. 
 
 [Demo](https://rawgit.com/Gillardo/bootstrap-ui-datetime-picker/master/example/index.html)
