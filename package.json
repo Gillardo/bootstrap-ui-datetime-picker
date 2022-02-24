@@ -8,6 +8,10 @@
   "description": "AngularJs directive to use a date and/or time picker as a dropdown from an input",
   "license": "MIT",
   "main": "dist/datetime-picker.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gillardo/bootstrap-ui-datetime-picker.git"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^0.5.7",
